@@ -48,120 +48,136 @@
             <div class="widget-main">
                 @using (Html.BeginForm("ItemUpdate", "Items", FormMethod.Post))
                 {
+                   @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)
-   
-                   
                     <div class="form-group row">
                         @Html.LabelFor(model => model.code, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
-                            @Html.TextBoxFor(model => model.id, new { @class = "form-control col-sm-2", @type = "hidden", @id = "form - field - 1 " })
+                        <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.code, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
                             @Html.ValidationMessageFor(model => model.code)
                         </div>
+                        <div class="col-sm-1"></div>
                         @Html.LabelFor(model => model.name, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.name, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
                             @Html.ValidationMessageFor(model => model.name)
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.category_id, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
-                            @Html.DropDownListFor(model => model.category_id, new SelectList(ViewBag.CategoryList, "id", "name"), new { @class = "chosen-select form-control", @id = "form-field-select-3" })
-                            @Html.ValidationMessageFor(model => model.category_id)
-                        </div>
-                        @Html.LabelFor(model => model.dangerous, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
-                            @Html.CheckBoxFor(model => model.dangerous)
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.specification, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
-                            @Html.TextAreaFor(model => model.specification, new { @class = "form-control col-sm-4", @rows = "2", @cols = "30" })
-                        </div>
-                        @Html.LabelFor(model => model.description, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
-                            @Html.TextAreaFor(model => model.description, new { @class = "form-control col-sm-4", @rows = "2", @cols = "30" })
-                        </div>
-                    </div>
-
-
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.discontinued_datetime, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                @Html.TextBoxFor(model => model.discontinued_datetime, new { @class = "form-control col-sm-4", @id = "date-timepicker1" })
-                                <span class="input-group-addon">
-                                    <i class="fa fa-clock-o bigger-110"></i>
-                                </span>
-                            </div>
-                            @Html.ValidationMessageFor(model => model.discontinued_datetime)
-                        </div>
                         <div class="col-sm-1"></div>
-                        @Html.LabelFor(model => model.inventory_measure_id, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
-                            @Html.DropDownListFor(model => model.inventory_measure_id, new SelectList(ViewBag.MeasureList, "id", "name"), new { @class = "chosen-select form-control", @id = "form-field-select-3" })
-
-                            @Html.ValidationMessageFor(model => model.inventory_measure_id)
-                        </div>
                     </div>
                         <div class="form-group row">
+                            @Html.LabelFor(model => model.category_id, new { @class = "control-lable col-sm-2" })
+                            <div class="col-sm-3">
+                                @Html.DropDownListFor(model => model.category_id, new SelectList(ViewBag.CategoryList, "id", "name"), new { @class = "chosen-select form-control", @id = "form-field-select-3" })
+                                @Html.ValidationMessageFor(model => model.category_id)
+                            </div>
+                            <div class="col-sm-1"></div>
+                            @Html.LabelFor(model => model.dangerous, new { @class = "control-lable col-sm-2" })
+                            <div class="col-sm-2">
+                                @Html.TextBoxFor(model => model.dangerous, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                                <span class="lbl middle"></span>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.specification, new { @class = "control-lable col-sm-2" })
+                            <div class="col-sm-3">
+                                @Html.TextAreaFor(model => model.specification, new { @class = "form-control col-sm-4", @rows = "2", @cols = "30" })
+                            </div>
+                            <div class="col-sm-1"></div>
+                            @Html.LabelFor(model => model.description, new { @class = "control-lable col-sm-2" })
+                            <div class="col-sm-3">
+                                @Html.TextAreaFor(model => model.description, new { @class = "form-control col-sm-4", @rows = "2", @cols = "30" })
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.discontinued_datetime, new { @class = "control-lable col-sm-2" })
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(model => model.discontinued_datetime, new { @class = "form-control col-sm-4", @id = "date-timepicker1" })
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-clock-o bigger-110"></i>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.discontinued_datetime)
+                            </div>
+                            <div class="col-sm-1"></div>
+                            @Html.LabelFor(model => model.inventory_measure_id, new { @class = "control-lable col-sm-2" })
+                            <div class="col-sm-3">
+                                @Html.DropDownListFor(model => model.inventory_measure_id, new SelectList(ViewBag.MeasureList, "id", "name"), new { @class = "chosen-select form-control", @id = "form-field-select-3" })
+                                @Html.ValidationMessageFor(model => model.inventory_measure_id)
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+                        <div class="form-group row">
                             @Html.LabelFor(model => model.inventory_expired, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 @Html.TextBoxFor(model => model.inventory_expired, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
                                 @Html.ValidationMessageFor(model => model.inventory_expired)
                             </div>
+                            <div class="col-sm-1"></div>
                             @Html.LabelFor(model => model.inventory_standard_cost, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 @Html.TextBoxFor(model => model.inventory_standard_cost, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
                                 @Html.ValidationMessageFor(model => model.inventory_standard_cost)
                             </div>
+                            <div class="col-sm-1"></div>
                         </div>
                         <div class="form-group row">
                             @Html.LabelFor(model => model.inventory_list_price, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 @Html.TextBoxFor(model => model.inventory_list_price, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
                                 @Html.ValidationMessageFor(model => model.inventory_list_price)
                             </div>
+                            <div class="col-sm-1"></div>
                             @Html.LabelFor(model => model.manufacture_day, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 @Html.TextBoxFor(model => model.manufacture_day, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
                                 @Html.ValidationMessageFor(model => model.manufacture_day)
                             </div>
+                            <div class="col-sm-1"></div>
                         </div>
                         <div class="form-group row">
                             @Html.LabelFor(model => model.manufacture_make, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
-                                @Html.CheckBoxFor(model => model.manufacture_make)
-                                @Html.ValidationMessageFor(model => model.manufacture_make)
+                            <div class="col-sm-2">
+                                @Html.TextBoxFor(model => model.manufacture_make, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                                <span class="lbl middle"></span>
                             </div>
+                            <div class="col-sm-2"></div>
                             @Html.LabelFor(model => model.manufacture_tool, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
-                                @Html.TextBoxFor(model => model.manufacture_tool, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
-                                @Html.ValidationMessageFor(model => model.manufacture_tool)
+                            <div class="col-sm-2">
+                                @Html.TextBoxFor(model => model.manufacture_tool, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                                <span class="lbl middle"></span>
                             </div>
+                            <div class="col-sm-2"></div>
                         </div>
                         <div class="form-group row">
                             @Html.LabelFor(model => model.manufacture_finished_goods, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
-                                @Html.CheckBoxFor(model => model.manufacture_finished_goods)
-                                @Html.ValidationMessageFor(model => model.manufacture_finished_goods)
+
+                            <div class="col-sm-2">
+                                @Html.TextBoxFor(model => model.manufacture_finished_goods, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                                <span class="lbl middle"></span>
+                            </div>
+
+                            <div class="col-sm-2">
+
                             </div>
                             @Html.LabelFor(model => model.manufacture_size, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-2">
-                                @Html.TextBoxFor(model => model.manufacture_size, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
+                            <div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.manufacture_size, new { @class = "form-control col-sm-2", @type = "number", @id = "form - field - 1 " })
                                 @Html.ValidationMessageFor(model => model.manufacture_size)
                             </div>
                             <div class="col-sm-2">
                                 @Html.DropDownListFor(model => model.manufacture_size_measure_id, new SelectList(ViewBag.MeasureList, "id", "name"), new { @class = "chosen-select form-control", @id = "form-field-select-3" })
                                 @Html.ValidationMessageFor(model => model.manufacture_size_measure_id)
                             </div>
-
+                            <div class="col-sm-1"></div>
                         </div>
                         <div class="form-group row">
                             @Html.LabelFor(model => model.manufacture_weight, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-2">
+                            <div class="col-sm-1">
                                 @Html.TextBoxFor(model => model.manufacture_weight, new { @class = "form-control col-sm-2" })
                                 @Html.ValidationMessageFor(model => model.manufacture_weight)
                             </div>
@@ -169,26 +185,39 @@
                                 @Html.DropDownListFor(model => model.manufacture_weight_measure_id, new SelectList(ViewBag.MeasureList, "id", "name"), new { @class = "chosen-select form-control", @id = "form-field-select-3" })
                                 @Html.ValidationMessageFor(model => model.manufacture_weight_measure_id)
                             </div>
+                            <div class="col-sm-1"></div>
                             @Html.LabelFor(model => model.manufacture_style, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
+                            <div class="col-sm-3">
                                 @Html.TextBoxFor(model => model.manufacture_style, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
                                 @Html.ValidationMessageFor(model => model.manufacture_style)
                             </div>
+                            <div class="col-sm-1"></div>
                         </div>
                         <div class="form-group row">
                             @Html.LabelFor(model => model.manufacture_class, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
-                                @Html.TextBoxFor(model => model.manufacture_class)
+                            <div class="col-sm-3">
+                                @Html.TextBoxFor(model => model.manufacture_class, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
                                 @Html.ValidationMessageFor(model => model.manufacture_class)
                             </div>
+                            <div class="col-sm-1"></div>
                             @Html.LabelFor(model => model.manufacture_color, new { @class = "control-lable col-sm-2" })
-                            <div class="col-sm-4">
-                                @Html.TextBoxFor(model => model.manufacture_color)
+                            <div class="col-sm-3">
+                                @Html.TextBoxFor(model => model.manufacture_color, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
                                 @Html.ValidationMessageFor(model => model.manufacture_color)
                             </div>
+                            <div class="col-sm-1"></div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-5">
 
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                            <div class="col-sm-3">
+                                <button type="reset" class="btn btn-primary">Reset</button>
+                            </div>
+                        </div>
                 }
 
 

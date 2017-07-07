@@ -17,8 +17,32 @@ namespace IVS_QuocHuong.Controllers
         const int pageSize = 25;
         // GET: Measure
         [HttpGet]
-        public ActionResult MeasureSearch(MeasureSearch model)
+        public ActionResult MeasureSearch(string Page,MeasureSearch model)
         {
+            MeasureDTO dto = new MeasureDTO();
+            ModelState.Clear();
+            if (!string.IsNullOrEmpty(model.SearchButton) || Page.IsNotNullOrEmpty())
+            {
+
+                if (Page != null)
+                {
+                    dto.page = int.Parse(Page);
+                    model.Page = dto.page;
+                }
+                MeasureBL bl = new MeasureBL();
+                List<MeasureDTO> result = new List<MeasureDTO>();
+                if (model.MeasureCode.IsNotNullOrEmpty())
+                {
+                    dto.code = model.MeasureCode;
+                }
+                if (model.MeasureName.IsNotNullOrEmpty())
+                {
+                    dto.name = model.MeasureName;
+                }
+                bl.SearchData(dto, out result);
+            
+                model.SearchResults = new StaticPagedList<ItemsDTO>(result, model.Page, 20, model.PageCount);
+            }
             if (!string.IsNullOrEmpty(model.SearchButton) || model.Page.HasValue)
             {
                 MeasureDTO dto = new MeasureDTO();
@@ -31,7 +55,7 @@ namespace IVS_QuocHuong.Controllers
                 {
                     dto.name = model.MeasureName;
                 }
-                MeasureBL bl = new MeasureBL();  
+        
                 bl.SearchData(dto, out list);
                 model.CountResult = list.Count;
                 var pageIndex = model.Page ?? 1;

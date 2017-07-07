@@ -26,65 +26,72 @@ namespace DAL.Product
             {
                 using (MySqlCommand cmd = new MySqlCommand())
                 {
-                    string sql = @"SELECT item.`id`, item.`code`, item.`name`,item.`Dangerous`, item.`specification`,item.`description`,item.`name` ,cate.`name` as category, item.`discontinued_datetime`
+                    try
+                    {
+                        string sql = @"SELECT item.`id`, item.`code`, item.`name`,item.`Dangerous`, item.`specification`,item.`description`,item.`name` ,cate.`name` as category, item.`discontinued_datetime`
                       FROM `product_item` item JOIN `product_category` cate ON cate.`ID`= item.`category_id` WHERE TRUE ";
-                    if (inputData.id.HasValue)
-                    {
-                        sql += " AND item.`id` = @ID ";
-                        cmd.Parameters.AddWithValue("@ID", inputData.id);
-                    }
-                    if (inputData.code.IsNotNullOrEmpty())
-                    {
-                        sql += " AND item.`code` LIKE CONCAT('%',@code,'%') ";
-                        cmd.Parameters.AddWithValue("@code", inputData.code);
-                    }
-                    if (inputData.name.IsNotNullOrEmpty())
-                    {
-                        sql += " AND item.`name` LIKE CONCAT('%',@name,'%') ";
-                        cmd.Parameters.AddWithValue("@name", inputData.name);
-
-
-                    }
-                    if (inputData.category_id.HasValue)
-                    {
-
-                        sql += " AND item.`category_id` = @category ";
-                        cmd.Parameters.AddWithValue("@category", inputData.category_id);
-
-                    }
-
-
-                    sql += " ORDER BY item.`discontinued_datetime` ";
-
-                    sql += " LIMIT  @start, 20 ";
-                    cmd.Parameters.AddWithValue("@start", 20 * (inputData.page - 1));
-                    con.Open();
-                    cmd.Connection = con;
-                    cmd.CommandText = sql;
-                    using (MySqlDataAdapter sda = new MySqlDataAdapter())
-                    {
-                        sda.SelectCommand = cmd;
-                        sda.Fill(tb);
-                        if (tb.Rows.Count == 0)
+                        if (inputData.id.HasValue)
                         {
-                            returnCode = 1;
+                            sql += " AND item.`id` = @ID ";
+                            cmd.Parameters.AddWithValue("@ID", inputData.id);
                         }
-                        else
+                        if (inputData.code.IsNotNullOrEmpty())
                         {
-                            foreach (DataRow item in tb.Rows)
+                            sql += " AND item.`code` LIKE CONCAT('%',@code,'%') ";
+                            cmd.Parameters.AddWithValue("@code", inputData.code);
+                        }
+                        if (inputData.name.IsNotNullOrEmpty())
+                        {
+                            sql += " AND item.`name` LIKE CONCAT('%',@name,'%') ";
+                            cmd.Parameters.AddWithValue("@name", inputData.name);
+
+
+                        }
+                        if (inputData.category_id.HasValue)
+                        {
+
+                            sql += " AND item.`category_id` = @category ";
+                            cmd.Parameters.AddWithValue("@category", inputData.category_id);
+
+                        }
+
+
+                        sql += " ORDER BY item.`discontinued_datetime` ";
+
+                        sql += " LIMIT  @start, 20 ";
+                        cmd.Parameters.AddWithValue("@start", 20 * (inputData.page - 1));
+                        con.Open();
+                        cmd.Connection = con;
+                        cmd.CommandText = sql;
+                        using (MySqlDataAdapter sda = new MySqlDataAdapter())
+                        {
+                            sda.SelectCommand = cmd;
+                            sda.Fill(tb);
+                            if (tb.Rows.Count == 0)
                             {
-                                ItemsDTO dto = new ItemsDTO();
-                                dto.id = int.Parse(item["id"].ToString());
-                                dto.code = item["code"].ToString();
-                                dto.name = item["name"].ToString();
-                                dto.specification = item["specification"].ToString();
-                                dto.description = item["description"].ToString();
-                                dto.discontinued_datetime = item["discontinued_datetime"].ToString();
-                                dto.dangerous = item["dangerous"].ToString().ParseBool();
-                                dto.category_name = item["category"].ToString();
-                                dt.Add(dto);
+                                returnCode = 1;
+                            }
+                            else
+                            {
+                                foreach (DataRow item in tb.Rows)
+                                {
+                                    ItemsDTO dto = new ItemsDTO();
+                                    dto.id = int.Parse(item["id"].ToString());
+                                    dto.code = item["code"].ToString();
+                                    dto.name = item["name"].ToString();
+                                    dto.specification = item["specification"].ToString();
+                                    dto.description = item["description"].ToString();
+                                    dto.discontinued_datetime = item["discontinued_datetime"].ToString();
+                                    dto.dangerous = item["dangerous"].ToString().ParseBool();
+                                    dto.category_name = item["category"].ToString();
+                                    dt.Add(dto);
+                                }
                             }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        returnCode = 1;
                     }
                 }
 
@@ -187,10 +194,13 @@ namespace DAL.Product
         {
             int returnCode = 0;
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+
             using (MySqlConnection connect = new MySqlConnection(constr))
             {
-                using (MySqlCommand command = new MySqlCommand(
-                    @"INSERT INTO product_item(
+                try
+                {
+                    using (MySqlCommand command = new MySqlCommand(
+                        @"INSERT INTO product_item(
                     `code`, `name`, `specification`, `description`, `category_id`, `discontinued_datetime`
                     , `dangerous`, `inventory_measure_id`, `inventory_expired`, `inventory_standard_cost`
                     , `inventory_list_price`, `manufacture_day`,`manufacture_make`, `manufacture_tool`
@@ -206,36 +216,40 @@ namespace DAL.Product
                     , @manufacture_weight, @manufacture_weight_measure_id, @manufacture_style
                     , @manufacture_class, @manufacture_color
                     , SYSDATE(), @created_by, SYSDATE(), @updated_by)", connect))
-                {
-                    command.Parameters.AddWithValue("@code", dto.code);
-                    command.Parameters.AddWithValue("@name", dto.name);
-                    command.Parameters.AddWithValue("@specification", dto.specification);
-                    command.Parameters.AddWithValue("@description", dto.description);
-                    command.Parameters.AddWithValue("@category_id", dto.category_id);
-                    command.Parameters.AddWithValue("@discontinued_datetime", dto.discontinued_datetime);
-                    command.Parameters.AddWithValue("@dangerous", dto.dangerous);
-                    command.Parameters.AddWithValue("@inventory_measure_id", dto.inventory_measure_id);
-                    command.Parameters.AddWithValue("@inventory_expired", dto.inventory_expired);
-                    command.Parameters.AddWithValue("@inventory_standard_cost", dto.inventory_standard_cost);
-                    command.Parameters.AddWithValue("@inventory_list_price", dto.inventory_list_price);
-                    command.Parameters.AddWithValue("@manufacture_day", dto.manufacture_day);
-                    command.Parameters.AddWithValue("@manufacture_make", dto.manufacture_make);
-                    command.Parameters.AddWithValue("@manufacture_tool", dto.manufacture_tool);
-                    command.Parameters.AddWithValue("@manufacture_finished_goods", dto.manufacture_finished_goods);
-                    command.Parameters.AddWithValue("@manufacture_size", dto.manufacture_size);
-                    command.Parameters.AddWithValue("@manufacture_size_measure_id", dto.manufacture_size_measure_id);
-                    command.Parameters.AddWithValue("@manufacture_weight", dto.manufacture_weight);
-                    command.Parameters.AddWithValue("@manufacture_weight_measure_id", dto.manufacture_weight_measure_id);
-                    command.Parameters.AddWithValue("@manufacture_style", dto.manufacture_style);
-                    command.Parameters.AddWithValue("@manufacture_class", dto.manufacture_class);
-                    command.Parameters.AddWithValue("@manufacture_color", dto.manufacture_color);
-                    command.Parameters.AddWithValue("@created_by", dto.created_by);
-                    command.Parameters.AddWithValue("@updated_by", dto.updated_by);
-                    connect.Open();
-                    command.ExecuteNonQuery();
+                    {
+                        command.Parameters.AddWithValue("@code", dto.code);
+                        command.Parameters.AddWithValue("@name", dto.name);
+                        command.Parameters.AddWithValue("@specification", dto.specification);
+                        command.Parameters.AddWithValue("@description", dto.description);
+                        command.Parameters.AddWithValue("@category_id", dto.category_id);
+                        command.Parameters.AddWithValue("@discontinued_datetime", dto.discontinued_datetime);
+                        command.Parameters.AddWithValue("@dangerous", dto.dangerous);
+                        command.Parameters.AddWithValue("@inventory_measure_id", dto.inventory_measure_id);
+                        command.Parameters.AddWithValue("@inventory_expired", dto.inventory_expired);
+                        command.Parameters.AddWithValue("@inventory_standard_cost", dto.inventory_standard_cost);
+                        command.Parameters.AddWithValue("@inventory_list_price", dto.inventory_list_price);
+                        command.Parameters.AddWithValue("@manufacture_day", dto.manufacture_day);
+                        command.Parameters.AddWithValue("@manufacture_make", dto.manufacture_make);
+                        command.Parameters.AddWithValue("@manufacture_tool", dto.manufacture_tool);
+                        command.Parameters.AddWithValue("@manufacture_finished_goods", dto.manufacture_finished_goods);
+                        command.Parameters.AddWithValue("@manufacture_size", dto.manufacture_size);
+                        command.Parameters.AddWithValue("@manufacture_size_measure_id", dto.manufacture_size_measure_id);
+                        command.Parameters.AddWithValue("@manufacture_weight", dto.manufacture_weight);
+                        command.Parameters.AddWithValue("@manufacture_weight_measure_id", dto.manufacture_weight_measure_id);
+                        command.Parameters.AddWithValue("@manufacture_style", dto.manufacture_style);
+                        command.Parameters.AddWithValue("@manufacture_class", dto.manufacture_class);
+                        command.Parameters.AddWithValue("@manufacture_color", dto.manufacture_color);
+                        command.Parameters.AddWithValue("@created_by", dto.created_by);
+                        command.Parameters.AddWithValue("@updated_by", dto.updated_by);
+                        connect.Open();
+                        command.ExecuteNonQuery();
+                    }
+
                 }
-
-
+                catch (Exception ex)
+                {
+                    returnCode = 1;
+                }
             }
             return returnCode;
         }
@@ -351,6 +365,36 @@ namespace DAL.Product
                         sql += " AND `category_id` = @category ";
                         cmd.Parameters.AddWithValue("@category", inputData.category_id);
                     }
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandText = sql;
+                    returnCode = int.Parse(cmd.ExecuteScalar().ToString());
+
+
+                }
+            }
+            return returnCode;
+
+        }
+
+        public static int CheckCode(ItemsDTO inputData)
+        {
+
+            DataTable tb = new DataTable();
+            int returnCode = 0;
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    string sql = @"SELECT Count(*) FROM product_item WHERE TRUE";
+                    if (inputData.code.IsNotNullOrEmpty())
+                    {
+                        sql += " AND `code` = @code ";
+                        cmd.Parameters.AddWithValue("@code", inputData.code);
+                    }
+                   
                     con.Open();
                     cmd.Connection = con;
                     cmd.CommandText = sql;

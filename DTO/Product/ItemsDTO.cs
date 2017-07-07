@@ -58,7 +58,7 @@ namespace DTO.Product
         public bool manufacture_make { get; set; }
 
         [Display(Name = "Manufacture tool")]
-        public int? manufacture_tool { get; set; }
+        public bool manufacture_tool { get; set; }
 
         [Display(Name = "Manufacture finished goods")]
         public bool manufacture_finished_goods { get; set; }

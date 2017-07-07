@@ -39,13 +39,36 @@
 <![endif]-->
 
 <body>
+    <div class="row">
+        <h4>
+            <a class="red" href="@Url.Action("ItemSearch", "Items")">
+                <i class="ace-icon fa fa-reply"></i>Back to list
+
+            </a>
+        </h4>
+    </div>
     <div class="widget-box">
         <div class="widget-header">
             <h4 class="widget-title">ADD ITEM</h4>
         </div>
         <div class="widget-body">
-
+            
             <div class="widget-main">
+                <div class="form-group row">
+                    @if (!string.IsNullOrEmpty((string)TempData["Error"]))
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["Error"]
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty((string)TempData["Success"]))
+                    {
+                        <div id="error" class="alert alert-success">
+                            @TempData["Success"]
+                        </div>
+                    }
+
+                </div>
                @using (Html.BeginForm("ItemAdd", "Items", FormMethod.Post))
                {
                 @Html.AntiForgeryToken()
@@ -207,8 +230,18 @@
                         </div>
                         <div class="col-sm-1"></div>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="row">
+                        <div class="col-sm-5">
+                         
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="reset" class="btn btn-primary">Reset</button>
+                        </div>
+                    </div>
+                   
                }
 
                 

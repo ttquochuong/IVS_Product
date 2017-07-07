@@ -48,5 +48,11 @@ namespace BL.Product
             return returnCode;
         }
 
+        public int CheckCode(ItemsDTO searchDto)
+        {
+            int returnCode = ItemsDAO.CheckCode(searchDto as ItemsDTO);
+            return returnCode;
+        }
+
     }
 }

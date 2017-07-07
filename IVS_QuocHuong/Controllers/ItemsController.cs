@@ -74,23 +74,7 @@ namespace IVS_QuocHuong.Controllers
         [HttpPost]
         public ActionResult ItemAdd(ItemsDTO model)
         {
-         
-            if (ModelState.IsValid)
-            {
-                if (model.discontinued_datetime.IsNotNullOrEmpty() == true)
-                {
-                    string datetime = DateTime.Parse(model.discontinued_datetime).ToString("yyyy-MM-dd HH:mm:ss");
-                    model.discontinued_datetime = datetime;
-                }
-                model.created_by = 0;
-                model.updated_by = 0;
-                ItemBL bl = new ItemBL();
-                bl.InsertData(model);
-                return RedirectToAction("ItemSearch");
-            }
-            else
-            {
-             CategoryBL category = new CategoryBL();
+            CategoryBL category = new CategoryBL();
             MeasureBL measure = new MeasureBL();
             DataTable categorydt;
             DataTable measuredt;
@@ -98,9 +82,40 @@ namespace IVS_QuocHuong.Controllers
             measure.SearchList(out measuredt);
             ViewBag.CategoryList = CommonMethod.DataTableToList<CategoryDTO>(categorydt);
             ViewBag.MeasureList = CommonMethod.DataTableToList<CategoryDTO>(measuredt);
-                return View(model);
+            ItemBL bl = new ItemBL();
+            if (ModelState.IsValid)
+            {
+                int count = bl.CheckCode(model);
+                if (count > 0)
+                {
+                    TempData["Error"] = "Code already exists";
+                    return View(model);
+                }
+                else
+                {
+                    if (model.discontinued_datetime.IsNotNullOrEmpty() == true)
+                    {
+                        string datetime = DateTime.Parse(model.discontinued_datetime).ToString("yyyy-MM-dd HH:mm:ss");
+                        model.discontinued_datetime = datetime;
+                    }
+                    model.created_by = 0;
+                    model.updated_by = 0;
+                    int equal = bl.InsertData(model);
+                    if (equal == 1)
+                    {
+                        TempData["Error"] = "Insert badly";
+                        TempData["Success"] = "";
+                        return View(model);
+                    }
+                    else
+                    {
+                        TempData["Error"] = "";
+                        TempData["Success"] = "Insert successfully";
+                        return RedirectToAction("ItemAdd");
+                    }
+                }
             }
-        
+            return View(model);
         }
 
         [HttpGet]
