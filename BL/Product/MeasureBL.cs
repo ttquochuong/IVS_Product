@@ -41,6 +41,17 @@ namespace BL.Product
             return returnCode;
         }
 
+        public int CheckCode(MeasureDTO dto)
+        {
+            int returnCode = MeasureDAO.CheckCode(dto);
+            return returnCode;
+        }
+
+        public int PageCount(MeasureDTO dto)
+        {
+            int returnCode = MeasureDAO.CountPage(dto);
+            return returnCode;
+        }
 
 
     }

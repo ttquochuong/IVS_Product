@@ -35,11 +35,12 @@ namespace DAL.Product
                         cmd.Parameters.AddWithValue("@name", inputData.name);
                     }
                     if (inputData.code.IsNotNullOrEmpty())
-                    {
-                       
+                    {       
                         sql += " AND `code` LIKE CONCAT('%',@code,'%')";
                         cmd.Parameters.AddWithValue("@code", inputData.code);
                     }
+                    sql += " LIMIT  @start, 20 ";
+                    cmd.Parameters.AddWithValue("@start", 20 * (inputData.page - 1));
                     cmd.Connection = con;
                     cmd.CommandText = sql;
                     using (MySqlDataAdapter sda = new MySqlDataAdapter())
@@ -95,6 +96,7 @@ namespace DAL.Product
 
             return returnCode;
         }
+
         public static int InsertData(MeasureDTO dto)
         {
             int returnCode = 0;
@@ -159,6 +161,67 @@ namespace DAL.Product
                 }
 
 
+            }
+            return returnCode;
+        }
+
+        public static int CheckCode(MeasureDTO dto)
+        {
+            DataTable tb = new DataTable();
+            int returnCode = 0;
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    string sql = @"SELECT Count(*) FROM product_measure WHERE TRUE";
+                    if (dto.code.IsNotNullOrEmpty())
+                    {
+                        sql += " AND `code` = @code ";
+                        cmd.Parameters.AddWithValue("@code", dto.code);
+                    }
+
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandText = sql;
+                    returnCode = int.Parse(cmd.ExecuteScalar().ToString());
+
+
+                }
+            }
+            return returnCode;
+        }
+
+        public static int CountPage(MeasureDTO dto)
+        {
+            DataTable tb = new DataTable();
+            int returnCode = 0;
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    string sql = @"SELECT Count(*) FROM product_measure WHERE TRUE";
+                    if (dto.code.IsNotNullOrEmpty())
+                    {
+                        sql += " AND `code` = @code ";
+                        cmd.Parameters.AddWithValue("@code", dto.code);
+                    }
+                    if (dto.code.IsNotNullOrEmpty())
+                    {
+                        sql += " AND `name` = @name ";
+                        cmd.Parameters.AddWithValue("@name", dto.name);
+                    }
+                 
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandText = sql;
+                    returnCode = int.Parse(cmd.ExecuteScalar().ToString());
+
+
+                }
             }
             return returnCode;
         }

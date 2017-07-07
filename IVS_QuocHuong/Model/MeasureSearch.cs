@@ -12,7 +12,7 @@ namespace IVS_QuocHuong.Model
         public int? Page { get; set; } = 1;
         public string MeasureName { get; set; }
         public string MeasureCode { get; set; }
-        public int CountRow { get; set}
+        public int PageCount { get; set}
         public IPagedList<MeasureDTO> SearchResults { get; set; }
         public string SearchButton { get; set; }
     }

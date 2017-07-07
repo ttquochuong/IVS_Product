@@ -36,6 +36,7 @@ namespace DTO.Product
 
         public int? updated_by { get; set; }
 
-    
+        public int page { get; set; } = 1;
+
     }
 }

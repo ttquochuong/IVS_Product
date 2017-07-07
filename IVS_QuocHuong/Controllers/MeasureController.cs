@@ -40,7 +40,7 @@ namespace IVS_QuocHuong.Controllers
                     dto.name = model.MeasureName;
                 }
                 bl.SearchData(dto, out result);
-            
+                model.PageCount=bl.pa
                 model.SearchResults = new StaticPagedList<ItemsDTO>(result, model.Page, 20, model.PageCount);
             }
             if (!string.IsNullOrEmpty(model.SearchButton) || model.Page.HasValue)
