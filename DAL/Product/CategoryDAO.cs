@@ -158,17 +158,27 @@ namespace DAL.Product
         {
             int returnCode = 0;
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-            using (MySqlConnection connect = new MySqlConnection(constr))
+            try
             {
-                using (MySqlCommand command = new MySqlCommand(
-                    @"DELETE FROM  `product_category` WHERE `id`=@ID", connect))
+                using (MySqlConnection connect = new MySqlConnection(constr))
                 {
-                    command.Parameters.AddWithValue("@ID", id);
-                    connect.Open();
-                    command.ExecuteNonQuery();
+                    using (MySqlCommand command = new MySqlCommand(
+                        @"DELETE FROM  `product_category` WHERE `id`=@ID", connect))
+                    {
+                        command.Parameters.AddWithValue("@ID", id);
+                        connect.Open();
+                        command.ExecuteNonQuery();
+
+                    }
+
+
                 }
-
-
+               
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                returnCode= 1;
             }
             return returnCode;
         }

@@ -25,7 +25,18 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <h3 class="header smaller lighter blue">List of item</h3>
+        <h3 class="header smaller lighter blue">
+            <div class="row">
+                <div class="col-xs-10">
+                    Search item
+                </div>
+                <div class="col-xs-2">
+                    <Button class="btn btn-sm btn-primary">
+                         Add items
+                    </Button>
+                </div>
+           </div>      
+         </h3>
         @using (Html.BeginForm("ItemSearch", "Items", FormMethod.Get))
             {
             @Html.ValidationSummary(false);
@@ -56,7 +67,7 @@
                     </div>
                     <div class="col-sm-1">
 
-                        <button type="submit" name="SearchButton" value="Search" class="btn btn-sm btn-pink">Submit</button>
+                        <button type="submit" name="SearchButton" value="Search" class="btn btn-sm btn-pink"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                     </div>
                 </div>
         }
@@ -67,9 +78,9 @@
 @if (Model.SearchResults != null && Model.SearchResults.Count > 0)
 {
     using (Html.BeginForm("ItemDeleteMulti", "Items", FormMethod.Post))
-    {
+    {       <h3 class="header smaller lighter blue">List of item</h3>
             <div class="table-header">
-                @Html.DisplayFor(Model => Model.CountResult)  row(s) found!
+                @Html.DisplayFor(Model => Model.PageCount)  row(s) found!
             </div>
 
             <!-- div.table-responsive -->
@@ -185,17 +196,7 @@
   
               }
     <div>
-        @Html.PagedListPager(Model.SearchResults,
-          page => Url.Action("ItemSearch", new RouteValueDictionary()
-          {
-               { "Page", page },
-               { "ItemName", Model.ItemName },
-               { "ItemCode", Model.ItemCode },
-               { "Category", Model.Category }
-
-               
-          })
-        )
+       @Html.PagedListPager(Model.SearchResults, page => Url.Action("ItemSearch", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
     </div>
             }
 

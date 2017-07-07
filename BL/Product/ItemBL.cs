@@ -42,5 +42,11 @@ namespace BL.Product
             return returnCode;
         }
 
+        public int CountPage(ItemsDTO searchDto)
+        {
+            int returnCode = ItemsDAO.CountPage(searchDto as ItemsDTO);
+            return returnCode;
+        }
+
     }
 }

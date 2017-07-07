@@ -42,17 +42,23 @@ namespace DAL.Product
                     {
                         sql += " AND item.`name` LIKE CONCAT('%',@name,'%') ";
                         cmd.Parameters.AddWithValue("@name", inputData.name);
-                      
+
 
                     }
                     if (inputData.category_id.HasValue)
                     {
-                      
+
                         sql += " AND item.`category_id` = @category ";
                         cmd.Parameters.AddWithValue("@category", inputData.category_id);
 
                     }
-                    sql += "ORDER BY item.`discontinued_datetime`";
+
+
+                    sql += " ORDER BY item.`discontinued_datetime` ";
+
+                    sql += " LIMIT  @start, 20 ";
+                    cmd.Parameters.AddWithValue("@start", 20 * (inputData.page - 1));
+                    con.Open();
                     cmd.Connection = con;
                     cmd.CommandText = sql;
                     using (MySqlDataAdapter sda = new MySqlDataAdapter())
@@ -63,7 +69,8 @@ namespace DAL.Product
                         {
                             returnCode = 1;
                         }
-                        else {
+                        else
+                        {
                             foreach (DataRow item in tb.Rows)
                             {
                                 ItemsDTO dto = new ItemsDTO();
@@ -73,7 +80,7 @@ namespace DAL.Product
                                 dto.specification = item["specification"].ToString();
                                 dto.description = item["description"].ToString();
                                 dto.discontinued_datetime = item["discontinued_datetime"].ToString();
-                                dto.category_name= item["category"].ToString();
+                                dto.category_name = item["category"].ToString();
                                 dt.Add(dto);
                             }
                         }
@@ -83,6 +90,7 @@ namespace DAL.Product
                 return returnCode;
             }
         }
+
         public static int SearchID(int? id, out ItemsDTO dt)
         {
             dt = new ItemsDTO();
@@ -104,7 +112,7 @@ namespace DAL.Product
                         sql += " AND `id` = @ID ";
                         cmd.Parameters.AddWithValue("@ID", id);
                     }
-                    
+
                     cmd.Connection = con;
                     cmd.CommandText = sql;
                     using (MySqlDataAdapter sda = new MySqlDataAdapter())
@@ -125,7 +133,7 @@ namespace DAL.Product
                             {
                                 dt.inventory_list_price = (Decimal.Parse(row["inventory_list_price"].ToString()));
                             }
-                            dt.dangerous= bool.Parse(row["dangerous"].ToString());
+                            dt.dangerous = bool.Parse(row["dangerous"].ToString());
                             dt.manufacture_style = row["manufacture_style"].ToString();
                             dt.manufacture_weight = row["manufacture_weight"].ToString();
                             if (row["manufacture_weight_measure_id"].ToString().IsNotNullOrEmpty())
@@ -134,7 +142,7 @@ namespace DAL.Product
                             }
                             dt.specification = row["specification"].ToString();
                             dt.description = row["description"].ToString();
-                            dt.discontinued_datetime =row["discontinued_datetime"].ParseDateTime().ToString();
+                            dt.discontinued_datetime = row["discontinued_datetime"].ParseDateTime().ToString();
                             if (row["inventory_expired"].ToString().IsNotNullOrEmpty())
                             {
                                 dt.inventory_expired = row["inventory_expired"].ToString().ParseInt32();
@@ -173,7 +181,7 @@ namespace DAL.Product
 
             return returnCode;
         }
-        
+
         public static int InsertData(ItemsDTO dto)
         {
             int returnCode = 0;
@@ -282,7 +290,7 @@ namespace DAL.Product
                         connect.Open();
                         command.ExecuteNonQuery();
 
-                }
+                    }
                 }
             }
             return returnCode;
@@ -308,5 +316,50 @@ namespace DAL.Product
         }
 
 
+        public static int CountPage(ItemsDTO inputData)
+        {
+
+            DataTable tb = new DataTable();
+            int returnCode = 0;
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmd = new MySqlCommand())
+                {
+                    string sql = @"SELECT Count(*) FROM product_item WHERE TRUE";
+                    if (inputData.id.HasValue)
+                    {
+                        sql += " AND `id` = @ID ";
+                        cmd.Parameters.AddWithValue("@ID", inputData.id);
+                    }
+                    if (inputData.code.IsNotNullOrEmpty())
+                    {
+                        sql += " AND `code` LIKE CONCAT('%',@code,'%') ";
+                        cmd.Parameters.AddWithValue("@code", inputData.code);
+                    }
+                    if (inputData.name.IsNotNullOrEmpty())
+                    {
+                        sql += " AND `name` LIKE CONCAT('%',@name,'%') ";
+                        cmd.Parameters.AddWithValue("@name", inputData.name);
+
+
+                    }
+                    if (inputData.category_id.HasValue)
+                    {
+                        sql += " AND `category_id` = @category ";
+                        cmd.Parameters.AddWithValue("@category", inputData.category_id);
+                    }
+                    con.Open();
+                    cmd.Connection = con;
+                    cmd.CommandText = sql;
+                    returnCode = int.Parse(cmd.ExecuteScalar().ToString());
+
+
+                }
+            }
+            return returnCode;
+
+        }
     }
 }

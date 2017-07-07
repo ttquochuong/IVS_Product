@@ -15,13 +15,17 @@ namespace IVS_QuocHuong.Controllers
     {
         const int pageSize = 25;
 
-        public ActionResult ItemSearch(ItemsSearch model)
+        public ActionResult ItemSearch(string Page,ItemsSearch model)
         {
-            if (!string.IsNullOrEmpty(model.SearchButton) || model.Page.HasValue)
+            if (!string.IsNullOrEmpty(model.SearchButton))
             {
-
-                ItemBL bl = new ItemBL();
                 ItemsDTO dto = new ItemsDTO();
+                if (Page != null)
+                {
+                    dto.page = int.Parse(Page);
+                    model.Page = dto.page;
+                }
+                ItemBL bl = new ItemBL();
                 List<ItemsDTO> result = new List<ItemsDTO>();
                 if (model.ItemName.IsNotNullOrEmpty())
                 {
@@ -35,11 +39,12 @@ namespace IVS_QuocHuong.Controllers
                 {
                     dto.category_id = model.Category;
                 }
+                
                 bl.SearchData(dto, out result);
-                model.CountResult = result.Count;
-                var pageIndex = model.Page ?? 1;
-                model.SearchResults = result.ToPagedList(pageIndex, pageSize);
-                     
+                model.PageCount = bl.CountPage(dto);
+                model.SearchResults = new StaticPagedList<ItemsDTO>(result, model.Page, 20, model.PageCount);
+
+
             }
             CategoryBL category = new CategoryBL();
             DataTable categorydt;
