@@ -52,7 +52,7 @@ namespace DTO.Product
         public decimal inventory_list_price { get; set; }
 
         [Display(Name = "Manufacture day")]
-        public double? manufacture_day { get; set; }
+        public decimal manufacture_day { get; set; }
 
         [Display(Name = "Manufacture make")]
         public bool manufacture_make { get; set; }

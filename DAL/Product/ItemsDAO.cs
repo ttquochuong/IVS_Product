@@ -26,7 +26,7 @@ namespace DAL.Product
             {
                 using (MySqlCommand cmd = new MySqlCommand())
                 {
-                    string sql = @"SELECT item.`id`, item.`code`, item.`name`, item.`specification`,item.`description`,item.`name` ,cate.`name` as category, item.`discontinued_datetime`
+                    string sql = @"SELECT item.`id`, item.`code`, item.`name`,item.`Dangerous`, item.`specification`,item.`description`,item.`name` ,cate.`name` as category, item.`discontinued_datetime`
                       FROM `product_item` item JOIN `product_category` cate ON cate.`ID`= item.`category_id` WHERE TRUE ";
                     if (inputData.id.HasValue)
                     {
@@ -80,6 +80,7 @@ namespace DAL.Product
                                 dto.specification = item["specification"].ToString();
                                 dto.description = item["description"].ToString();
                                 dto.discontinued_datetime = item["discontinued_datetime"].ToString();
+                                dto.dangerous = item["dangerous"].ToString().ParseBool();
                                 dto.category_name = item["category"].ToString();
                                 dt.Add(dto);
                             }
@@ -159,7 +160,7 @@ namespace DAL.Product
                             dt.manufacture_color = row["manufacture_color"].ToString();
                             if (row["manufacture_day"].ToString().IsNotNullOrEmpty())
                             {
-                                dt.manufacture_day = row["manufacture_day"].ToString().ParseDouble();
+                                dt.manufacture_day =Decimal.Parse(row["manufacture_day"].ToString());
                             }
                             if (row["manufacture_finished_goods"].ToString().IsNotNullOrEmpty())
                             {

@@ -15,11 +15,13 @@ namespace IVS_QuocHuong.Controllers
     {
         const int pageSize = 25;
 
-        public ActionResult ItemSearch(string Page,ItemsSearch model)
-        {
-            if (!string.IsNullOrEmpty(model.SearchButton))
+        public ActionResult ItemSearch(string Page, ItemsSearch model)
+        {  
+            ItemsDTO dto = new ItemsDTO();
+            ModelState.Clear();
+            if (!string.IsNullOrEmpty(model.SearchButton) || Page.IsNotNullOrEmpty())
             {
-                ItemsDTO dto = new ItemsDTO();
+
                 if (Page != null)
                 {
                     dto.page = int.Parse(Page);
@@ -39,23 +41,22 @@ namespace IVS_QuocHuong.Controllers
                 {
                     dto.category_id = model.Category;
                 }
-                
+
                 bl.SearchData(dto, out result);
                 model.PageCount = bl.CountPage(dto);
                 model.SearchResults = new StaticPagedList<ItemsDTO>(result, model.Page, 20, model.PageCount);
-
-
             }
-            CategoryBL category = new CategoryBL();
-            DataTable categorydt;
-            category.SearchList(out categorydt);
-            CategoryDTO cate = new CategoryDTO();
-            List<CategoryDTO> List = CommonMethod.DataTableToList<CategoryDTO>(categorydt);
-            List.Add(cate);
-            ViewBag.CategoryList = List;
-            return View(model);
-        }
+                CategoryBL category = new CategoryBL();
+                DataTable categorydt;
+                category.SearchList(out categorydt);
+                CategoryDTO cate = new CategoryDTO();
+                List<CategoryDTO> List = CommonMethod.DataTableToList<CategoryDTO>(categorydt);
+                List.Add(cate);
+                ViewBag.CategoryList = List;
 
+                return View(model);
+            
+        }
         [HttpGet]
         public ActionResult ItemAdd()
         {
@@ -112,13 +113,11 @@ namespace IVS_QuocHuong.Controllers
             DataTable measuredt;
             ItemsDTO dto = new ItemsDTO();      
             bl.SearchID(id, out dto);
-            ItemsAdd model = new ItemsAdd();
-            model.Item = dto;
             category.SearchList(out categorydt);
             measure.SearchList(out measuredt);
             ViewBag.CategoryList = CommonMethod.DataTableToList<CategoryDTO>(categorydt);
             ViewBag.MeasureList = CommonMethod.DataTableToList<CategoryDTO>(measuredt);
-            return View(model);
+            return View(dto);
         }
 
         [HttpPost]

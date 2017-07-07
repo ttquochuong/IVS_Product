@@ -119,6 +119,18 @@ namespace Core
                 return 0;
             }
         }
+        public static bool ParseBool(this string tr)
+        {
+            if (tr.ToLower() == "true")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static double ParseDouble(this string num)
         {
             if (num.IsNumber() && num.IsNotNullOrEmpty())

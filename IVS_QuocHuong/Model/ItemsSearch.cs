@@ -13,7 +13,7 @@ namespace IVS_QuocHuong.Model
         public string ItemName { get; set; }
         public string ItemCode { get; set; }
         public int? Category { get; set; }
-        public int CountResult { get; set; }
+        public ItemsDTO model { get; set; }
         public int PageCount { get; set; }
         public StaticPagedList<ItemsDTO> SearchResults { get; set; }
         public string SearchButton { get; set; }

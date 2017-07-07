@@ -38,7 +38,7 @@
            </div>      
          </h3>
         @using (Html.BeginForm("ItemSearch", "Items", FormMethod.Get))
-            {
+        {
             @Html.ValidationSummary(false);
             <div class="form-group row">
                 <div class="col-sm-1">
@@ -76,16 +76,17 @@
                 <div class="pull-right tableTools-container"></div>
             </div>
 @if (Model.SearchResults != null && Model.SearchResults.Count > 0)
-{
-    using (Html.BeginForm("ItemDeleteMulti", "Items", FormMethod.Post))
-    {       <h3 class="header smaller lighter blue">List of item</h3>
+
+    {
+        using (Html.BeginForm("ItemDeleteMulti", "Items", FormMethod.Post))
+        {       <h3 class="header smaller lighter blue">List of item</h3>
             <div class="table-header">
                 @Html.DisplayFor(Model => Model.PageCount)  row(s) found!
             </div>
 
             <!-- div.table-responsive -->
             <!-- div.dataTables_borderWrap -->
-           
+
                  <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -95,12 +96,13 @@
                                     <span class="lbl"></span>
                                 </label>
                             </th>
-                            <th class="hidden-480">Code</th>
-                            <th class="hidden-480">Name</th>
-                            <th class="hidden-480">Specification</th>
-                            <th class="hidden-480">Category</th>
-                            <th class="hidden-480">Discontinued Datetime</th>
-                            <th>
+                            <th class="hidden-480 center">Code</th>
+                            <th class="hidden-480 center">Name</th>
+                            <th class="hidden-480 center">Category</th> 
+                            <th class="hidden-400 center">Discontinued</th>  
+                            <th class="hidden-480 center">Dangerous</th>                                
+                            <th class="hidden-480 center">Specification</th>
+                            <th class="hidden-480 center">
                                
                             </th>
                         </tr>
@@ -109,7 +111,7 @@
                     @foreach (var dto in Model.SearchResults)
                     {
                                 <tr>
-                                    <td class="center">
+                                    <td class="center hidden-480 ">
                                         <label class="pos-rel">
                                             <input type="checkbox" class="ace" value="@dto.id" name="ItemID" />
                                             <span class="lbl"></span>
@@ -117,19 +119,26 @@
                                     </td>
 
                                     <td>
-                                        <a href="#">@dto.code</a>
+                                       @dto.code
                                     </td>
                                     <td class="hidden-480">
                                         @dto.name
                                     </td>
                                     <td class="hidden-480">
-                                        @dto.specification
-                                    </td>
-                                    <td class="hidden-480">
                                         @dto.category_name
                                     </td>
-                                    <td class="hidden-480">
+
+                                    <td class="hidden-480" >
                                         @dto.discontinued_datetime
+                                    </td>                            
+                                    <td class="hidden-480">
+                                    @if (@dto.dangerous == true)
+                                    {
+                                        <Center><i class="ace-icon fa fa-check"></i></Center>
+                                    }
+                                   </td>
+                                    <td class="hidden-480">
+                                        @dto.specification
                                     </td>
                                     <td>
                                         <div class="hidden-sm hidden-xs action-buttons">
@@ -180,10 +189,10 @@
                                         </div>
                                     </td>                                
                                 </tr>
-                            }
+                    }
                             <tr>
                                 
-                                <td colspan="7">
+                                <td colspan="8">
                                 <div class="hidden-sm hidden-xs action-buttons">
                                     <button type="submit" class="btn btn-danger">
                                     <i class="ace-icon glyphicon glyphicon-remove" onclick="return ConfirmDelete()"></i>Delete
@@ -193,14 +202,24 @@
                             </tr>               
                     </tbody>
                 </table>
-  
-              }
-    <div>
-       @Html.PagedListPager(Model.SearchResults, page => Url.Action("ItemSearch", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
-    </div>
-            }
 
-        </div>
+
+    <div>
+     
+        @Html.PagedListPager(Model.SearchResults,
+               page => Url.Action("ItemSearch", new RouteValueDictionary()
+               {
+               { "Page", page },
+               { "ItemName", Model.ItemName },
+               { "ItemCode", Model.ItemCode },
+               { "Category", Model.Category }
+
+
+               })
+             )
+    </div>
+    }     
+}
 
     </div>
 </div>
