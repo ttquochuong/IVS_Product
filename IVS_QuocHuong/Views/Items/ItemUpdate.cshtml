@@ -39,14 +39,14 @@
 <![endif]-->
 
 <body>
-    <div class="row">
-        <Button class="btn btn-white btn-warning btn-bold " onclick="location.href='@Url.Action("ItemSearch", "Items")'">
-            <i class="ace-icon fa fa-reply icon-only"></i>Back to list
+    <div class="header">
+        <Button class="btn btn-primary" onclick="location.href='@Url.Action("ItemSearch", "Items")'">
+            <i class="ace-icon fa fa-undo bigger-160"></i>Back to list
         </Button>
     </div>
     <div class="widget-box">
         <div class="widget-header">
-            <h4 class="widget-title">Add item</h4>
+            <h4 class="widget-title">Update item</h4>
         </div>
         <div class="widget-body">
             @Html.AntiForgeryToken()
@@ -88,9 +88,19 @@
                                 @Html.ValidationMessageFor(model => model.category_id)
                             </div>
                             <div class="col-sm-1"></div>
+                           
                             @Html.LabelFor(model => model.dangerous, new { @class = "control-lable col-sm-2" })
+                            
                             <div class="col-sm-2">
-                                @Html.TextBoxFor(model => model.dangerous, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                                @if ((string)ViewData["dangerous"] == "true")
+                                {
+                                    @Html.TextBoxFor(model => model.dangerous, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @value = "@model.dangerous", @checked = "checked" })
+                                }
+                                else
+      
+                                {
+                                    @Html.TextBoxFor(model => model.dangerous, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @value = "@model.dangerous"})
+                                }
                                 <span class="lbl middle"></span>
                             </div>
                             <div class="col-sm-1"></div>
@@ -159,13 +169,29 @@
                         <div class="form-group row">
                             @Html.LabelFor(model => model.manufacture_make, new { @class = "control-lable col-sm-2" })
                             <div class="col-sm-2">
-                                @Html.TextBoxFor(model => model.manufacture_make, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                            @if ((string)ViewData["make"] == "true")
+                            {
+                                @Html.TextBoxFor(model => model.manufacture_make, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @value = "@model.manufacture_make", @checked = "checked" })
+
+                            }
+                            else
+                            {
+
+                                @Html.TextBoxFor(model => model.manufacture_make, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @value = "@model.manufacture_make" })
+                            }
                                 <span class="lbl middle"></span>
                             </div>
                             <div class="col-sm-2"></div>
                             @Html.LabelFor(model => model.manufacture_tool, new { @class = "control-lable col-sm-2" })
                             <div class="col-sm-2">
-                                @Html.TextBoxFor(model => model.manufacture_tool, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                            @if ((string)ViewData["tool"] == "true")
+                            {
+                                @Html.TextBoxFor(model => model.manufacture_tool, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @value = "@model.manufacture_tool", @checked = "checked" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.manufacture_tool, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @value = "@model.manufacture_tool" })
+                            }
                                 <span class="lbl middle"></span>
                             </div>
                             <div class="col-sm-2"></div>
@@ -174,7 +200,14 @@
                             @Html.LabelFor(model => model.manufacture_finished_goods, new { @class = "control-lable col-sm-2" })
 
                             <div class="col-sm-2">
-                                @Html.TextBoxFor(model => model.manufacture_finished_goods, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                            @if ((string)ViewData["good"] == "true")
+                            {
+                                @Html.TextBoxFor(model => model.manufacture_finished_goods, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @value = "@model.manufacture_finished_goods", @checked = "checked" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(model => model.manufacture_finished_goods, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @value = "@model.manufacture_finished_goods"})
+                            }
                                 <span class="lbl middle"></span>
                             </div>
 
@@ -278,7 +311,12 @@
 <script src="~/Content/js/ace-elements.min.js"></script>
 <script src="~/Content/js/ace.min.js"></script>
 
+<script type="text/javascript">
+$("input[type='checkbox']").on('change', function(){
+  $(this).val(this.checked ? "true" : "false");
+})
 
+</script>
 <script type="text/javascript">
 			jQuery(function($) {
 				$('#id-disable-check').on('click', function() {

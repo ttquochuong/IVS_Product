@@ -43,15 +43,20 @@ namespace DTO.Product
         public int? inventory_measure_id { get; set; }
 
         [Display(Name = "Inventory expired")]
+        [RegularExpression(@"^\d{1,11})", ErrorMessage = "Inventory expired must be number")]
         public int? inventory_expired { get; set; }
 
-        public double? inventory_standard_cost { get; set; }
+        [Display(Name = "inventory standard cost")]
+        [RegularExpression(@"^\d{0,14}(\.{1})?\d{1,4}", ErrorMessage = "Invalid format. Ex:4444.333, 3333, 333.2222,....")]
+        public decimal inventory_standard_cost { get; set; }
 
         [Display(Name = "Inventory list price")]
-        [Range(-99999999999999.9999,9999999999999.9999, ErrorMessage = "Price must be between $1 and $100")]
+        [RegularExpression(@"^\d{0,14}(\.{1})?\d{1,4}", ErrorMessage = "Invalid format. Ex:4444.333, 3333, 333.2222,....")]
         public decimal inventory_list_price { get; set; }
 
         [Display(Name = "Manufacture day")]
+        [RegularExpression(@"^\d{0,9}((\.{1})?\d{1,2})", ErrorMessage = "Invalid format. Ex:4444.3, 3333, 333.22,....")]
+        [Range(-999999999.9999, 999999999.9999, ErrorMessage = "Valid too range")]
         public decimal manufacture_day { get; set; }
 
         [Display(Name = "Manufacture make")]
@@ -74,11 +79,14 @@ namespace DTO.Product
 
         [Display(Name = "Manufacture weight")]
         public int? manufacture_weight_measure_id { get; set; }
- 
+
+        [Display(Name = "Manufacture style")]
         public string manufacture_style { get; set; }
-  
+
+        [Display(Name = "Manufacture class")]
         public string manufacture_class { get; set; }
-  
+
+        [Display(Name = "Manufacture color")]
         public string manufacture_color { get; set; }
 
         public int? created_by { get; set; }
@@ -86,5 +94,9 @@ namespace DTO.Product
         public int? updated_by { get; set; }
 
         public int page { get; set; } = 1;
+
+        public string AddButton { get; set; }
+
+        public string UpdateButton { get; set; }
     }
 }

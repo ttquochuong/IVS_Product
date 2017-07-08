@@ -59,6 +59,7 @@ namespace IVS_QuocHuong.Controllers
         [HttpGet]
         public ActionResult ItemAdd()
         {
+            ModelState.Clear();
             CategoryBL category = new CategoryBL();
             MeasureBL measure = new MeasureBL();
             DataTable categorydt;
@@ -73,48 +74,53 @@ namespace IVS_QuocHuong.Controllers
         [HttpPost]
         public ActionResult ItemAdd(ItemsDTO model)
         {
-            CategoryBL category = new CategoryBL();
-            MeasureBL measure = new MeasureBL();
-            DataTable categorydt;
-            DataTable measuredt;
-            category.SearchList(out categorydt);
-            measure.SearchList(out measuredt);
-            ViewBag.CategoryList = CommonMethod.DataTableToList<CategoryDTO>(categorydt);
-            ViewBag.MeasureList = CommonMethod.DataTableToList<CategoryDTO>(measuredt);
-            ItemBL bl = new ItemBL();
-            if (ModelState.IsValid)
-            {
-                int count = bl.CheckCode(model);
-                if (count > 0)
+                CategoryBL category = new CategoryBL();
+                MeasureBL measure = new MeasureBL();
+                DataTable categorydt;
+                DataTable measuredt;
+                category.SearchList(out categorydt);
+                measure.SearchList(out measuredt);
+                ViewBag.CategoryList = CommonMethod.DataTableToList<CategoryDTO>(categorydt);
+                ViewBag.MeasureList = CommonMethod.DataTableToList<CategoryDTO>(measuredt);
+                ItemBL bl = new ItemBL();
+            
+                if (ModelState.IsValid)
                 {
-                    TempData["Error"] = "Code already exists";
-                    return View(model);
-                }
-                else
-                {
-                    if (model.discontinued_datetime.IsNotNullOrEmpty() == true)
+                    int count = bl.CheckCode(model);
+                    if (count > 0)
                     {
-                        string datetime = DateTime.Parse(model.discontinued_datetime).ToString("yyyy-MM-dd HH:mm:ss");
-                        model.discontinued_datetime = datetime;
-                    }
-                    model.created_by = 0;
-                    model.updated_by = 0;
-                    int equal = bl.InsertData(model);
-                    if (equal == 1)
-                    {
-                        TempData["Error"] = "Insert badly";
-                        TempData["Success"] = "";
+                        TempData["Error"] = "Code already exists";
                         return View(model);
                     }
                     else
                     {
-                        TempData["Error"] = "";
-                        TempData["Success"] = "Insert successfully";
-                        return RedirectToAction("ItemAdd");
+                        if (model.discontinued_datetime.IsNotNullOrEmpty() == true)
+                        {
+                            string datetime = DateTime.Parse(model.discontinued_datetime).ToString("yyyy-MM-dd HH:mm:ss");
+                            model.discontinued_datetime = datetime;
+                        }
+                        model.created_by = 0;
+                        model.updated_by = 0;
+                        int equal = bl.InsertData(model);
+                        if (equal == 1)
+                        {
+                            TempData["Error"] = "Insert badly";
+                            TempData["Success"] = "";
+                            return View(model);
+                        }
+                        else
+                        {
+                            TempData["Error"] = "";
+                            TempData["Success"] = "Insert successfully";
+                            return RedirectToAction("ItemAdd");
+                        }
                     }
                 }
-            }
-            return View(model);
+                else
+                {
+                    return View(model);
+                }
+        
         }
 
         [HttpGet]
@@ -131,18 +137,33 @@ namespace IVS_QuocHuong.Controllers
             measure.SearchList(out measuredt);
             ViewBag.CategoryList = CommonMethod.DataTableToList<CategoryDTO>(categorydt);
             ViewBag.MeasureList = CommonMethod.DataTableToList<CategoryDTO>(measuredt);
+            ViewData["tool"] = dto.manufacture_tool.ToString().ToLower();
+            ViewData["make"] = dto.manufacture_make.ToString().ToLower();
+            ViewData["dangerous"] = dto.dangerous.ToString().ToLower();
+            ViewData["good"] = dto.manufacture_finished_goods.ToString().ToLower();
             return View(dto);
         }
 
         [HttpPost]
         public ActionResult ItemUpdate(ItemsDTO model)
         {
-            string datetime = DateTime.Parse(model.discontinued_datetime).ToString("yyyy-MM-dd HH:mm:ss");
-            model.updated_by = 65;
-            model.discontinued_datetime = datetime;
-            ItemBL bl = new ItemBL();
-            bl.UpdateData(model);
-            return RedirectToAction("ItemSearch");
+            ViewData["tool"] = model.manufacture_tool.ToString().ToLower();
+            ViewData["make"] = model.manufacture_make.ToString().ToLower();
+            ViewData["dangerous"] = model.dangerous.ToString().ToLower();
+            ViewData["good"] = model.manufacture_finished_goods.ToString().ToLower();
+            if (ModelState.IsValid)
+            {
+                if (model.discontinued_datetime.IsNotNullOrEmpty())
+                {
+                    string datetime = DateTime.Parse(model.discontinued_datetime).ToString("yyyy-MM-dd HH:mm:ss");
+                    model.discontinued_datetime = datetime;
+                }
+                model.updated_by = 65;
+                ItemBL bl = new ItemBL();
+                bl.UpdateData(model);
+                return RedirectToAction("ItemSearch");
+            }
+            else return View(model);
         }
 
         [HttpGet]

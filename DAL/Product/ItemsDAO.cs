@@ -139,7 +139,7 @@ namespace DAL.Product
                             dt.name = row["name"].ToString();
                             if (row["inventory_list_price"].ToString().IsNotNullOrEmpty())
                             {
-                                dt.inventory_list_price = (Decimal.Parse(row["inventory_list_price"].ToString()));
+                                dt.inventory_list_price = (decimal.Parse(row["inventory_list_price"].ToString()));
                             }
                             dt.dangerous = bool.Parse(row["dangerous"].ToString());
                             dt.manufacture_style = row["manufacture_style"].ToString();
@@ -161,13 +161,13 @@ namespace DAL.Product
                             }
                             if (row["inventory_standard_cost"].ToString().IsNotNullOrEmpty())
                             {
-                                dt.inventory_standard_cost = row["inventory_standard_cost"].ToString().ParseDouble();
+                                dt.inventory_standard_cost =decimal.Parse(row["inventory_standard_cost"].ToString());
                             }
                             dt.manufacture_class = row["manufacture_class"].ToString();
                             dt.manufacture_color = row["manufacture_color"].ToString();
                             if (row["manufacture_day"].ToString().IsNotNullOrEmpty())
                             {
-                                dt.manufacture_day =Decimal.Parse(row["manufacture_day"].ToString());
+                                dt.manufacture_day =decimal.Parse(row["manufacture_day"].ToString());
                             }
                             if (row["manufacture_finished_goods"].ToString().IsNotNullOrEmpty())
                             {

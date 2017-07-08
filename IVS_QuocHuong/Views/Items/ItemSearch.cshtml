@@ -25,19 +25,14 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <h3 class="header smaller lighter blue">
-            <div class="row">
-                <div class="col-xs-10">
-                    Search item
-                </div>
-                <div class="col-xs-2">
-                    <Button class="btn btn-sm btn-primary">
-                         Add items
-                    </Button>
-                </div>
+      
+            <div class="header smaller lighter blue">
+                <Button class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("ItemAdd", "Items")'">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add item
+                </Button>
+                    
            </div>      
-         </h3>
-        @using (Html.BeginForm("ItemSearch", "Items", FormMethod.Get))
+         @using (Html.BeginForm("ItemSearch", "Items", FormMethod.Get))
         {
             @Html.ValidationSummary(false);
             <div class="form-group row">
@@ -134,7 +129,7 @@
                                     <td class="hidden-480">
                                     @if (@dto.dangerous == true)
                                     {
-                                        <Center><i class="ace-icon fa fa-check"></i></Center>
+                                        <Center><i class="ace-icon fa fa-check" style="color:mediumvioletred"></i></Center>
                                     }
                                    </td>
                                     <td class="hidden-480">

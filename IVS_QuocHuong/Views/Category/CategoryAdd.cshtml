@@ -55,13 +55,13 @@
                 @using (Html.BeginForm("CategoryAdd", "Category", FormMethod.Post))
                 {
                     @Html.ValidationSummary(true)
-                    @if (!string.IsNullOrEmpty((string)TempData["Error"]))
+                    if (!string.IsNullOrEmpty((string)TempData["Error"]))
                     {
                         <div class="alert alert-danger">
                             @TempData["Error"]
                         </div>
                     }
-                    @if (!string.IsNullOrEmpty((string)TempData["Success"]))
+                    if (!string.IsNullOrEmpty((string)TempData["Success"]))
                     {
                         <div id="error" class="alert alert-success">
                             @TempData["Success"]

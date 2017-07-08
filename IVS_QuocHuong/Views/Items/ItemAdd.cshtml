@@ -39,9 +39,9 @@
 <![endif]-->
 
 <body>
-    <div class="row">
-        <Button class="btn btn-white btn-warning btn-bold " onclick="location.href='@Url.Action("ItemSearch", "Items")'">
-            <i class="ace-icon fa fa-reply icon-only"></i>Back to list
+    <div class="header">
+        <Button class="btn btn-primary" onclick="location.href='@Url.Action("ItemSearch", "Items")'">
+            <i class="ace-icon fa fa-undo bigger-160"></i>Back to list
         </Button>
     </div>
     <div class="widget-box">
@@ -67,34 +67,35 @@
                    
 
                 </div>
+                @Html.AntiForgeryToken()
                @using (Html.BeginForm("ItemAdd", "Items", FormMethod.Post))
                {
-                @Html.AntiForgeryToken()
+              
                    @Html.ValidationSummary(true)
                     <div class="form-group row">
                                 @Html.LabelFor(model => model.code, new { @class = "control-lable col-sm-2"})
                         <div class="col-sm-3">
                                 @Html.TextBoxFor(model => model.code, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
-                                @Html.ValidationMessageFor(model => model.code)
+                                @Html.ValidationMessageFor(model => model.code,"", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                                 @Html.LabelFor(model => model.name, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-3">
                                 @Html.TextBoxFor(model => model.name, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
-                                @Html.ValidationMessageFor(model => model.name)
+                                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                         </div>
                     <div class="form-group row">
                         @Html.LabelFor(model => model.category_id, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-3">
-                            @Html.DropDownListFor(model => model.category_id, new SelectList(ViewBag.CategoryList, "id", "name"),new {@class="chosen-select form-control", @id="form-field-select-3"})
-                            @Html.ValidationMessageFor(model => model.category_id)
+                            @Html.DropDownListFor(model => model.category_id, new SelectList(ViewBag.CategoryList, "id", "name"),"",new { @class = "chosen-select form-control", @id = "dropdown" })
+                            @Html.ValidationMessageFor(model => model.category_id,"", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                         @Html.LabelFor(model => model.dangerous, new { @class = "control-lable col-sm-2"})
                         <div class="col-sm-2">     
-                                @Html.TextBoxFor(model => model.dangerous, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                                @Html.TextBoxFor(model => model.dangerous, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @val = "false" })
                                 <span class="lbl middle"></span>         
                         </div>
                         <div class="col-sm-1"></div>
@@ -127,8 +128,8 @@
                         <div class="col-sm-1"></div>
                             @Html.LabelFor(model => model.inventory_measure_id, new { @class = "control-lable col-sm-2" })
                             <div class="col-sm-3">
-                                @Html.DropDownListFor(model => model.inventory_measure_id, new SelectList(ViewBag.MeasureList, "id", "name"), new { @class = "chosen-select form-control", @id = "form-field-select-3" })
-                                @Html.ValidationMessageFor(model => model.inventory_measure_id)
+                                @Html.DropDownListFor(model => model.inventory_measure_id, new SelectList(ViewBag.MeasureList, "id", "name"),new { @class = "chosen-select form-control", @id = "form-field-select-3" })
+                                @Html.ValidationMessageFor(model => model.inventory_measure_id,"", new { @class = "text-danger" })
                             </div>
                             <div class="col-sm-1"></div>
                         </div>
@@ -136,13 +137,13 @@
                         @Html.LabelFor(model => model.inventory_expired, new { @class = "control-lable col-sm-2"})
                         <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.inventory_expired, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.inventory_expired)
+                            @Html.ValidationMessageFor(model => model.inventory_expired, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                         @Html.LabelFor(model => model.inventory_standard_cost, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.inventory_standard_cost, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.inventory_standard_cost)
+                            @Html.ValidationMessageFor(model => model.inventory_standard_cost, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                     </div>
@@ -163,13 +164,13 @@
                     <div class="form-group row">
                         @Html.LabelFor(model => model.manufacture_make, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-2">
-                            @Html.CheckBoxFor(model => model.manufacture_make)
+                            @Html.TextBoxFor(model => model.manufacture_make, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @val = "false" })
                             <span class="lbl middle"></span>
                         </div>
                         <div class="col-sm-2"></div>
                         @Html.LabelFor(model => model.manufacture_tool, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-2">
-                            @Html.CheckBoxFor(model => model.manufacture_tool)
+                            @Html.TextBoxFor(model => model.manufacture_tool, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @val = "false" })
                             <span class="lbl middle"></span>
                         </div>
                         <div class="col-sm-2"></div>
@@ -177,10 +178,10 @@
                     <div class="form-group row">
                         @Html.LabelFor(model => model.manufacture_finished_goods, new { @class = "control-lable col-sm-2" })
                        
-                         <div class="col-sm-2">
-                                @Html.CheckBoxFor(model => model.manufacture_finished_goods)
-                                <span class="lbl middle"></span>
-                         </div>
+                        <div class="col-sm-2">
+                            @Html.TextBoxFor(model => model.manufacture_finished_goods, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5", @val = "false" })
+                            <span class="lbl middle"></span>
+                        </div>
                     
                          <div class="col-sm-2">
                            
@@ -233,11 +234,12 @@
                          
                         </div>
                         <div class="col-sm-1">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" name="AddButton" class="btn btn-primary"><i class="ace-icon fa fa-floppy-o bigger-160"></i>Save</button>
                         </div>
-                        <div class="col-sm-3">
-                            <button type="reset" class="btn btn-primary">Reset</button>
+                        <div class="col-sm-1">
+                            <button type="reset" class="btn btn-primary "><i class="ace-icon fa fa-refresh bigger-160" onclick="reset()"></i>Reset</button>
                         </div>
+                       
                     </div>
                    
                }
@@ -679,4 +681,14 @@
 
 			});
 </script>
+<script type="text/javascript">
+$("input[type='checkbox']").on('change', function(){
+  $(this).val(this.checked ? "true" : "false");
+})
+function reset() {
+    $("input[type='checkbox']").on('change', function () {
+        $(this).val("false");
+    })
 
+}
+</script>
