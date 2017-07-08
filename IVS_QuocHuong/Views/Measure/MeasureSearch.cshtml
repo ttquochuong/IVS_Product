@@ -6,8 +6,20 @@
 }
 
 <div class="row">
+    <h3 class="header smaller lighter blue">
+        <div class="row">
+            <div class="col-xs-10">
+                Search item
+            </div>
+            <div class="col-xs-2">
+                <Button class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("MeasureAdd", "Measure")'">
+                    Add measure
+                </Button>
+            </div>
+        </div>
+    </h3>
     <div class="col-xs-12">
-        <h3 class="header smaller lighter blue">List of measure</h3>
+      
         @using (Html.BeginForm("MeasureSearch", "Measure", FormMethod.Get))
             {
             @Html.ValidationSummary(false);
@@ -19,6 +31,7 @@
                 </div>
                 <label></label>
                 <div class="col-sm-2">
+                    <a href="~/Views/Category/CategoryAdd.cshtml">~/Views/Category/CategoryAdd.cshtml</a>
                     @Html.TextBoxFor(Model => Model.MeasureCode)
                 </div>
 
@@ -44,9 +57,10 @@
         <div>
 @if (Model.SearchResults != null && Model.SearchResults.Count > 0)
 {
-            using (Html.BeginForm("MeasureDeleteMulti", "Measure", FormMethod.Post))
-            {
-            <div class="table-header">@Html.DisplayFor(Model => Model.CountResult)  row(s) found!</div>
+    using (Html.BeginForm("MeasureDeleteMulti", "Measure", FormMethod.Post))
+    {
+        <h3 class="header smaller lighter blue">List of measure</h3>
+            <div class="table-header">@Html.DisplayFor(Model => Model.PageCount)  row(s) found!</div>
             <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>

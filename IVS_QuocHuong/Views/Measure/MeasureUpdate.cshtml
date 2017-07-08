@@ -38,13 +38,30 @@
 <![endif]-->
 
 <body>
+    <div class="row">
+        <Button class="btn btn-white btn-warning btn-bold " onclick="location.href='@Url.Action("CategorySearch", "Category")'">
+            <i class="ace-icon fa fa-reply icon-only"></i>Back to list
+        </Button>
+    </div>
     <div class="widget-box">
         <div class="widget-header">
-            <h4 class="widget-title">Add measure</h4>
+            <h4 class="widget-title">Update measure</h4>
         </div>
         <div class="widget-body">
             @Html.AntiForgeryToken()
             <div class="widget-main">
+                @if (!string.IsNullOrEmpty((string)TempData["Error"]))
+                {
+                    <div class="alert alert-danger">
+                        @TempData["Error"]
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty((string)TempData["Success"]))
+                {
+                    <div id="error" class="alert alert-success">
+                        @TempData["Success"]
+                    </div>
+                }
                 @using (Html.BeginForm("MeasureUpdate", "Measure", FormMethod.Post))
                 {
                     @Html.ValidationSummary(true)
@@ -71,7 +88,17 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="row">
+                        <div class="col-sm-5">
+
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="reset" class="btn btn-primary">Reset</button>
+                        </div>
+                    </div>
                 }
 
 

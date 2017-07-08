@@ -47,9 +47,9 @@ namespace BL.Product
             return returnCode;
         }
 
-        public int PageCount(CategoryDTO dto)
+        public int CountPage(CategoryDTO dto)
         {
-            int returnCode = MeasureDAO.CountPage(dto);
+            int returnCode = CategoryDAO.CountPage(dto);
             return returnCode;
         }
     }

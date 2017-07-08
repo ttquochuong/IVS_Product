@@ -14,29 +14,35 @@ namespace IVS_QuocHuong.Controllers
 {
     public class CategoryController : Controller
     {
-        const int pageSize = 25;
+        
         // GET: Caterogy
-        public ActionResult CategorySearch(CategorySearch model)
+        public ActionResult CategorySearch(string Page,CategorySearch model)
         {
             CategoryBL bl = new CategoryBL();
-            List<CategoryDTO> list = new List<CategoryDTO>();
-            if (!string.IsNullOrEmpty(model.SearchButton) || model.Page.HasValue)
+            CategoryDTO dto = new CategoryDTO();
+            if (!string.IsNullOrEmpty(model.SearchButton) || Page.IsNotNullOrEmpty())
             {
-                CategoryDTO dto = new CategoryDTO();
+
+                if (Page != null)
+                {
+                    dto.page = int.Parse(Page);
+                    model.Page = dto.page;
+                }
+          
+                List<CategoryDTO> result = new List<CategoryDTO>();
                 if (model.CategoryCode.IsNotNullOrEmpty())
                 {
                     dto.code = model.CategoryCode;
                 }
-                if(model.CategoryName.IsNotNullOrEmpty())
+                if (model.CategoryName.IsNotNullOrEmpty())
                 {
                     dto.name = model.CategoryName;
                 }
-                bl.SearchData(dto, out list);
-                var pageIndex= model.Page ?? 1;
-                model.CountResult = list.Count();
-                model.SearchResults = list.ToPagedList(pageIndex, pageSize);
+                bl.SearchData(dto, out result);
+                model.PageCount = bl.CountPage(dto);
+                
+                model.SearchResults = new StaticPagedList<CategoryDTO>(result, model.Page, 20, model.PageCount);
             }
-          
             return View(model);
         }
 

@@ -31,12 +31,12 @@ namespace DAL.Product
                     }
                     if (inputData.code.IsNotNullOrEmpty())
                     {
-                        sql += " AND child.`code` = @code ";
+                        sql += " AND child.`code` LIKE CONCAT('%',@code,'%') ";
                         cmd.Parameters.AddWithValue("@code", inputData.code);
                     }
                     if (inputData.name.IsNotNullOrEmpty())
                     {
-                        sql += " AND child.`name` = @name ";
+                        sql += " AND child.`name` LIKE CONCAT('%',@name,'%') ";
                         cmd.Parameters.AddWithValue("@name", inputData.name);
                     }
                     sql += " LIMIT  @start, 20 ";

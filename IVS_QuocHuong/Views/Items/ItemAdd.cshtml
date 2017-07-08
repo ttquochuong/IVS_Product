@@ -40,12 +40,9 @@
 
 <body>
     <div class="row">
-        <h4>
-            <a class="red" href="@Url.Action("ItemSearch", "Items")">
-                <i class="ace-icon fa fa-reply"></i>Back to list
-
-            </a>
-        </h4>
+        <Button class="btn btn-white btn-warning btn-bold " onclick="location.href='@Url.Action("ItemSearch", "Items")'">
+            <i class="ace-icon fa fa-reply icon-only"></i>Back to list
+        </Button>
     </div>
     <div class="widget-box">
         <div class="widget-header">
@@ -67,6 +64,7 @@
                             @TempData["Success"]
                         </div>
                     }
+                   
 
                 </div>
                @using (Html.BeginForm("ItemAdd", "Items", FormMethod.Post))
@@ -165,13 +163,13 @@
                     <div class="form-group row">
                         @Html.LabelFor(model => model.manufacture_make, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-2">
-                            @Html.TextBoxFor(model => model.manufacture_make, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                            @Html.CheckBoxFor(model => model.manufacture_make)
                             <span class="lbl middle"></span>
                         </div>
                         <div class="col-sm-2"></div>
                         @Html.LabelFor(model => model.manufacture_tool, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-2">
-                            @Html.TextBoxFor(model => model.manufacture_tool, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                            @Html.CheckBoxFor(model => model.manufacture_tool)
                             <span class="lbl middle"></span>
                         </div>
                         <div class="col-sm-2"></div>
@@ -180,7 +178,7 @@
                         @Html.LabelFor(model => model.manufacture_finished_goods, new { @class = "control-lable col-sm-2" })
                        
                          <div class="col-sm-2">
-                                @Html.TextBoxFor(model => model.manufacture_finished_goods, new { @id = "id-button-borders", @type = "checkbox", @class = "ace ace-switch ace-switch-5" })
+                                @Html.CheckBoxFor(model => model.manufacture_finished_goods)
                                 <span class="lbl middle"></span>
                          </div>
                     

@@ -40,27 +40,11 @@ namespace IVS_QuocHuong.Controllers
                     dto.name = model.MeasureName;
                 }
                 bl.SearchData(dto, out result);
-                model.PageCount=bl.pa
-                model.SearchResults = new StaticPagedList<ItemsDTO>(result, model.Page, 20, model.PageCount);
+                model.PageCount = bl.PageCount(dto);
+                model.SearchResults = new StaticPagedList<MeasureDTO>(result, model.Page, 20, model.PageCount);
             }
-            if (!string.IsNullOrEmpty(model.SearchButton) || model.Page.HasValue)
-            {
-                MeasureDTO dto = new MeasureDTO();
-                List<MeasureDTO> list = new List<MeasureDTO>();
-                if (model.MeasureCode.IsNotNullOrEmpty())
-                {
-                    dto.code = model.MeasureCode;
-                }
-                if (model.MeasureName.IsNotNullOrEmpty())
-                {
-                    dto.name = model.MeasureName;
-                }
-        
-                bl.SearchData(dto, out list);
-                model.CountResult = list.Count;
-                var pageIndex = model.Page ?? 1;
-                model.SearchResults = list.ToPagedList(pageIndex, pageSize);
-            }
+   
+            
             return View(model);
         }
 
@@ -72,14 +56,25 @@ namespace IVS_QuocHuong.Controllers
         }
         [HttpPost]
         public ActionResult MeasureAdd(MeasureDTO measure)
-        {
+        { 
             if (ModelState.IsValid)
             {
                 MeasureBL bl = new MeasureBL();
-                measure.created_by = 0;
-                measure.updated_by = 0;
-                bl.InsertData(measure);
-                return RedirectToAction("MeasureAdd");
+                if (bl.CheckCode(measure) > 0)
+                {
+                    TempData["Error"] = "Insert fail";
+                    TempData["Success"] = "";
+                }
+                else
+                {
+                    measure.created_by = 0;
+                    measure.updated_by = 0;
+                    bl.InsertData(measure);
+                    TempData["Error"] = "";
+                    TempData["Success"] = "Insert successfully";
+                    return RedirectToAction("MeasureAdd");
+                }
+           
             }
             return View(measure);
         }

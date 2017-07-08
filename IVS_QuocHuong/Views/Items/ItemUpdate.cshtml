@@ -39,13 +39,30 @@
 <![endif]-->
 
 <body>
+    <div class="row">
+        <Button class="btn btn-white btn-warning btn-bold " onclick="location.href='@Url.Action("ItemSearch", "Items")'">
+            <i class="ace-icon fa fa-reply icon-only"></i>Back to list
+        </Button>
+    </div>
     <div class="widget-box">
         <div class="widget-header">
-            <h4 class="widget-title">ADD ITEM</h4>
+            <h4 class="widget-title">Add item</h4>
         </div>
         <div class="widget-body">
             @Html.AntiForgeryToken()
             <div class="widget-main">
+                @if (!string.IsNullOrEmpty((string)TempData["Error"]))
+                {
+                    <div class="alert alert-danger">
+                        @TempData["Error"]
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty((string)TempData["Success"]))
+                {
+                    <div id="error" class="alert alert-success">
+                        @TempData["Success"]
+                    </div>
+                }
                 @using (Html.BeginForm("ItemUpdate", "Items", FormMethod.Post))
                 {
                    @Html.AntiForgeryToken()

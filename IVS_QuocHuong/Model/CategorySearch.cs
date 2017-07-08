@@ -9,11 +9,11 @@ namespace IVS_QuocHuong.Model
 {
     public class CategorySearch
     {
-        public int? Page { get; set; }
+        public int Page { get; set; } = 1;
         public string CategoryName { get; set; }
         public string CategoryCode { get; set; }
         public string CategoryParent { get; set; }
-        public IPagedList<CategoryDTO> SearchResults { get; set; }
+        public StaticPagedList<CategoryDTO> SearchResults { get; set; }
         public string SearchButton { get; set; }
         public int PageCount { get; set; }
     }

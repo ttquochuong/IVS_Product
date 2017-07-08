@@ -41,6 +41,9 @@
 <![endif]-->
 
 <body>
+    <Button class="btn btn-white btn-warning" onclick="location.href='@Url.Action("CategorySearch", "Category")'">
+        <i class="ace-icon fa fa-reply icon-only"></i>Back to list
+    </Button>
     <div class="widget-box">
         <div class="widget-header">
             <h4 class="widget-title">Add measure</h4>
@@ -48,6 +51,18 @@
         <div class="widget-body">
             @Html.AntiForgeryToken()
             <div class="widget-main">
+                @if (!string.IsNullOrEmpty((string)TempData["Error"]))
+                {
+                    <div class="alert alert-danger">
+                        @TempData["Error"]
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty((string)TempData["Success"]))
+                {
+                    <div id="error" class="alert alert-success">
+                        @TempData["Success"]
+                    </div>
+                }
                 @using (Html.BeginForm("CategoryUpdate", "Category", FormMethod.Post))
                 {
                     @Html.ValidationSummary(true)

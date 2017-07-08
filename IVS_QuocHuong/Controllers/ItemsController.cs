@@ -13,8 +13,7 @@ namespace IVS_QuocHuong.Controllers
 {
     public class ItemsController : Controller
     {
-        const int pageSize = 25;
-
+        
         public ActionResult ItemSearch(string Page, ItemsSearch model)
         {  
             ItemsDTO dto = new ItemsDTO();
