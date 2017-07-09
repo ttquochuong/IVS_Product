@@ -29,10 +29,10 @@
                 <strong>OK!</strong> @TempData["Success"]
             </div>
         }
-       <div class="row header smaller lighter blue">                 
-                    <Button class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("CategoryAdd", "Category")'">
-                        Add category
-                    </Button>        
+        <div class="row header smaller lighter blue">
+            <Button class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("CategoryAdd", "Category")'">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Add category
+            </Button>
         </div>
       
         @using (Html.BeginForm("CategorySearch", "Category", FormMethod.Get))
@@ -58,7 +58,7 @@
                 </div>
 
                 <div class="col-sm-2">
-                    <button type="submit" name="SearchButton" value="Search" class="btn btn-sm btn-pink">Search</button>
+                    <button type="submit" name="SearchButton" value="Search" class="btn btn-sm btn-pink"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search</button>
                 </div>
             </div>
         }

@@ -14,7 +14,7 @@ namespace IVS_QuocHuong.Controllers
 {
     public class MeasureController : Controller
     {
-        const int pageSize = 25;
+      
         // GET: Measure
         [HttpGet]
         public ActionResult MeasureSearch(string Page,MeasureSearch model)
@@ -62,19 +62,31 @@ namespace IVS_QuocHuong.Controllers
                 MeasureBL bl = new MeasureBL();
                 if (bl.CheckCode(measure) > 0)
                 {
-                    TempData["Error"] = "Insert fail";
+                    TempData["Error"] = "Code already exsit";
                     TempData["Success"] = "";
                 }
                 else
                 {
                     measure.created_by = 0;
                     measure.updated_by = 0;
-                    bl.InsertData(measure);
-                    TempData["Error"] = "";
-                    TempData["Success"] = "Insert successfully";
-                    return RedirectToAction("MeasureAdd");
+                    int result=bl.InsertData(measure);
+                    if (result == 1)
+                    {
+                        TempData["Error"] = "Insert fail";
+                        TempData["Success"] = "";
+                      
+                    }
+                    else
+                    {
+                        TempData["Error"] = "";
+                        TempData["Success"] = "Insert successfully";
+                        return RedirectToAction("MeasureAdd");
+                    }
+             
+                
                 }
-           
+            
+
             }
             return View(measure);
         }
@@ -86,16 +98,26 @@ namespace IVS_QuocHuong.Controllers
             List<MeasureDTO> dtResult = new List<MeasureDTO>();
             MeasureDTO measureDTO = new MeasureDTO();
             measureDTO.id = id;
-            int count=bl.SearchData(measureDTO, out dtResult);
+            bl.SearchData(measureDTO, out dtResult);
             
-            if (count == 1)
+            if (dtResult.Count() <=0)
             {
                 Response.StatusCode = 404;
                 return null;
             }
             else
             {
-                bl.DeleteData(id);
+               int result= bl.DeleteData(id);
+                if (result == 1)
+                {
+                    TempData["Error"] = "Delete fail";
+                    TempData["Success"] = "";
+                }
+                else
+                {
+                    TempData["Error"] = "";
+                    TempData["Success"] = "Delete sucessfully";
+                }
             }    
             return RedirectToAction("MeasureSearch");
         }
@@ -103,6 +125,7 @@ namespace IVS_QuocHuong.Controllers
         [HttpGet]
         public ActionResult MeasureUpdate(int id)
         {
+            ModelState.Clear();
             MeasureBL bl = new MeasureBL();
             List<MeasureDTO> dtResult = new List<MeasureDTO>();
             MeasureDTO measure = new MeasureDTO();
@@ -116,11 +139,27 @@ namespace IVS_QuocHuong.Controllers
         [HttpPost]
         public ActionResult MeasureUpdate(MeasureDTO measure)
         {
-            MeasureBL bl = new MeasureBL();
-            measure.created_by = 0;
-            measure.updated_by = 0;
-            bl.UpdateData(measure);
-            return RedirectToAction("MeasureSearch");
+            if (ModelState.IsValid)
+            {
+                MeasureBL bl = new MeasureBL();
+                measure.created_by = 0;
+                measure.updated_by = 0;
+                int result=bl.UpdateData(measure);
+                if (result == 1)
+                {
+                    TempData["Error"] = "Update fail";
+                    TempData["Success"] = "";
+                }
+                else
+                {
+                    TempData["Error"] = "";
+                    TempData["Success"] = "Update successfully";
+                }
+                return RedirectToAction("MeasureSearch");
+            }
+            
+                return View(measure);
+            
         }
 
 

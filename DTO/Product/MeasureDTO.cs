@@ -13,7 +13,6 @@ namespace DTO.Product
         public int? id { get; set; }
 
         [Display(Name = "Code")]
-    
         public string code { get; set; }
 
         [Display(Name = "Name")]
