@@ -17,7 +17,7 @@ namespace BL.Product
             return returnCode;
         }
 
-        public int SearchList(out DataTable dtResult)
+        public int SearchList(out List<MeasureDTO> dtResult)
         {
             int returnCode = MeasureDAO.SearchList(out dtResult);
             return returnCode;

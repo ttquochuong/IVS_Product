@@ -25,13 +25,28 @@
 
 <div class="row">
     <div class="col-xs-12">
-      
+            @if (!string.IsNullOrEmpty((string)TempData["Error"]))
+            {
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Error!</strong> @TempData["Error"]
+                </div>
+            }
+            @if (!string.IsNullOrEmpty((string)TempData["Success"]))
+            {
+                <div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>OK!</strong> @TempData["Success"]
+                </div>
+            }
             <div class="header smaller lighter blue">
                 <Button class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("ItemAdd", "Items")'">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add item
                 </Button>
                     
-           </div>      
+           </div>   
+      
+        
          @using (Html.BeginForm("ItemSearch", "Items", FormMethod.Get))
         {
             @Html.ValidationSummary(false);

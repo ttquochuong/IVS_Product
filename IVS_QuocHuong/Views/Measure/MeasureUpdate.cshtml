@@ -38,9 +38,9 @@
 <![endif]-->
 
 <body>
-    <div class="row">
-        <Button class="btn btn-white btn-warning btn-bold " onclick="location.href='@Url.Action("CategorySearch", "Category")'">
-            <i class="ace-icon fa fa-reply icon-only"></i>Back to list
+    <div class="header">
+        <Button class="btn btn-primary" onclick="location.href='@Url.Action("MeasureSearch", "Measure")'">
+            <i class="ace-icon fa fa-undo bigger-160"></i>Back to list
         </Button>
     </div>
     <div class="widget-box">
@@ -64,20 +64,17 @@
                 }
                 @using (Html.BeginForm("MeasureUpdate", "Measure", FormMethod.Post))
                 {
+
                     @Html.ValidationSummary(true)
                     <div class="form-group row">
                         @Html.LabelFor(model => model.code, new { @class = "control-lable col-sm-1" })
                         <div class="col-sm-3">
-                            @Html.TextBoxFor(model => model.code, new { @class = "form-control col-sm-3", @type = "text", @id = "form - field - 1 " })
-                        </div>
-                        <div class="col-sm-2">
+                            @Html.TextBoxFor(model => model.code, new { @class = "form-control col-sm-3", @type = "text", @id = "form - field - 1",@readonly="readonly" })
                             @Html.ValidationMessageFor(model => model.code)
                         </div>
                         @Html.LabelFor(model => model.name, new { @class = "control-lable col-sm-1" })
                         <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.name, new { @class = "form-control col-sm-3 ", @type = "text", @id = "form - field - 1 " })
-                        </div>
-                        <div class="col-sm-2">
                             @Html.ValidationMessageFor(model => model.name)
                         </div>
                     </div>
@@ -93,11 +90,12 @@
 
                         </div>
                         <div class="col-sm-1">
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" name="AddButton" class="btn btn-primary"><i class="ace-icon fa fa-floppy-o bigger-160"></i>Update</button>
                         </div>
-                        <div class="col-sm-3">
-                            <button type="reset" class="btn btn-primary">Reset</button>
+                        <div class="col-sm-1">
+                            <button type="reset" class="btn btn-primary "><i class="ace-icon fa fa-refresh bigger-160"></i>Reset</button>
                         </div>
+
                     </div>
                 }
 

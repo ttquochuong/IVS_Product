@@ -89,7 +89,7 @@
                     <div class="form-group row">
                         @Html.LabelFor(model => model.category_id, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-3">
-                            @Html.DropDownListFor(model => model.category_id, new SelectList(ViewBag.CategoryList, "id", "name"),"",new { @class = "chosen-select form-control", @id = "dropdown" })
+                            @Html.DropDownListFor(model => model.category_id, new SelectList(ViewBag.CategoryList, "id", "name"),new { @class = "chosen-select form-control", @id = "dropdown" })
                             @Html.ValidationMessageFor(model => model.category_id,"", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
@@ -136,7 +136,7 @@
                     <div class="form-group row">
                         @Html.LabelFor(model => model.inventory_expired, new { @class = "control-lable col-sm-2"})
                         <div class="col-sm-3">
-                            @Html.TextBoxFor(model => model.inventory_expired, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
+                             @Html.TextBoxFor(model => model.inventory_expired, new { @class = "form-control col-sm-2 ", @type = "number", @id = "form - field - 1 " })
                             @Html.ValidationMessageFor(model => model.inventory_expired, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
@@ -151,13 +151,13 @@
                         @Html.LabelFor(model => model.inventory_list_price, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.inventory_list_price, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.inventory_list_price)
+                            @Html.ValidationMessageFor(model => model.inventory_list_price, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                         @Html.LabelFor(model => model.manufacture_day, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.manufacture_day, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.manufacture_day)
+                            @Html.ValidationMessageFor(model => model.manufacture_day, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                     </div>
@@ -188,12 +188,12 @@
                         </div>
                          @Html.LabelFor(model => model.manufacture_size, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-1">     
-                            @Html.TextBoxFor(model => model.manufacture_size, new { @class = "form-control col-sm-2", @type = "number", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.manufacture_size)                          
+                            @Html.TextBoxFor(model => model.manufacture_size, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
+                            @Html.ValidationMessageFor(model => model.manufacture_size, "", new { @class = "text-danger" })                          
                         </div>
                         <div  class="col-sm-2">
                             @Html.DropDownListFor(model => model.manufacture_size_measure_id, new SelectList(ViewBag.MeasureList, "id", "name"),new { @class = "chosen-select form-control", @id = "form-field-select-3" })
-                            @Html.ValidationMessageFor(model => model.manufacture_size_measure_id)
+                            @Html.ValidationMessageFor(model => model.manufacture_size_measure_id, "", new { @class = "text-danger" })
                        </div>
                         <div class="col-sm-1"></div>     
                     </div>
@@ -201,17 +201,17 @@
                         @Html.LabelFor(model => model.manufacture_weight, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-1">
                             @Html.TextBoxFor(model => model.manufacture_weight, new { @class = "form-control col-sm-2" })
-                            @Html.ValidationMessageFor(model => model.manufacture_weight)
+                            @Html.ValidationMessageFor(model => model.manufacture_weight, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-2">
                             @Html.DropDownListFor(model => model.manufacture_weight_measure_id, new SelectList(ViewBag.MeasureList, "id", "name"),new { @class = "chosen-select form-control", @id = "form-field-select-3" })
-                            @Html.ValidationMessageFor(model => model.manufacture_weight_measure_id)
+                            @Html.ValidationMessageFor(model => model.manufacture_weight_measure_id, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                         @Html.LabelFor(model => model.manufacture_style, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.manufacture_style,new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.manufacture_style)
+                            @Html.ValidationMessageFor(model => model.manufacture_style, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                     </div>
@@ -219,13 +219,13 @@
                         @Html.LabelFor(model => model.manufacture_class, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.manufacture_class, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.manufacture_class)
+                            @Html.ValidationMessageFor(model => model.manufacture_class, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                         @Html.LabelFor(model => model.manufacture_color, new { @class = "control-lable col-sm-2" })
                         <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.manufacture_color, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.manufacture_color)
+                            @Html.ValidationMessageFor(model => model.manufacture_color, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-sm-1"></div>
                     </div>
@@ -688,6 +688,9 @@ $("input[type='checkbox']").on('change', function(){
 function reset() {
     $("input[type='checkbox']").on('change', function () {
         $(this).val("false");
+    })
+    $("input[type='text']").on('change', function () {
+        $(this).value("");
     })
 
 }

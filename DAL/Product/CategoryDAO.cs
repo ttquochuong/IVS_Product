@@ -80,9 +80,10 @@ namespace DAL.Product
             return returnCode;
         }
 
-        public static int SearchList(out DataTable dt)
+        public static int SearchList(out List<CategoryDTO> dt)
         {
-            dt = new DataTable();
+            dt = new List<CategoryDTO>();
+            DataTable tb = new DataTable();
             int returnCode = 0;
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             using (MySqlConnection con = new MySqlConnection(constr))
@@ -92,10 +93,63 @@ namespace DAL.Product
                     using (MySqlDataAdapter sda = new MySqlDataAdapter())
                     {
                         sda.SelectCommand = cmd;
-                        sda.Fill(dt);
-                        if (dt.Rows.Count == 0)
+                        sda.Fill(tb);
+                        if (tb.Rows.Count == 0)
                         {
                             returnCode = 1;
+                        }
+                        else
+                        {
+                            foreach (DataRow item in tb.Rows)
+                            {
+                                CategoryDTO dto = new CategoryDTO();
+                                dto.id = int.Parse(item["id"].ToString());
+                                dto.code = item["code"].ToString();
+                                dto.name = item["name"].ToString();
+                                dt.Add(dto);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return returnCode;
+        }
+
+        public static int SearchListUp(CategoryDTO inputData, out List<CategoryDTO> dt)
+        {
+            dt = new List<CategoryDTO>();
+            DataTable tb = new DataTable();
+            int returnCode = 0;
+            string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("SELECT ct.ID, ct.Name, ct.Code FROM product_category ct WHERE TRUE ", con))
+                {
+                    string sql = "SELECT ct.ID, ct.Name, ct.Code FROM product_category ct WHERE TRUE";
+                    if (inputData.id.HasValue)
+                    {
+                        sql += " AND child.`id` != @ID ";
+                        cmd.Parameters.AddWithValue("@ID", inputData.id);
+                    }
+                    using (MySqlDataAdapter sda = new MySqlDataAdapter())
+                    {
+                        sda.SelectCommand = cmd;
+                        sda.Fill(tb);
+                        if (tb.Rows.Count == 0)
+                        {
+                            returnCode = 1;
+                        }
+                        else
+                        {
+                            foreach(DataRow item in tb.Rows)
+                            {
+                                CategoryDTO dto = new CategoryDTO();
+                                dto.id = int.Parse(item["id"].ToString());
+                                dto.code = item["code"].ToString();
+                                dto.name = item["name"].ToString();
+                                dt.Add(dto);
+                            }
                         }
                     }
                 }
@@ -178,7 +232,7 @@ namespace DAL.Product
             }
             catch (Exception ex)
             {
-                throw ex;
+                
                 returnCode= 1;
             }
             return returnCode;

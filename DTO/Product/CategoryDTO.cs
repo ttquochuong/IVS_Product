@@ -38,5 +38,7 @@ namespace DTO.Product
 
         public int page { get; set; } = 1;
 
+        public List<CategoryDTO> Category { get; set; }
+
     }
 }

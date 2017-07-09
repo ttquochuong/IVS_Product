@@ -39,8 +39,7 @@ namespace IVS_QuocHuong.Controllers
                     dto.name = model.CategoryName;
                 }
                 bl.SearchData(dto, out result);
-                model.PageCount = bl.CountPage(dto);
-                
+                model.PageCount = bl.CountPage(dto);     
                 model.SearchResults = new StaticPagedList<CategoryDTO>(result, model.Page, 20, model.PageCount);
             }
             return View(model);
@@ -50,26 +49,53 @@ namespace IVS_QuocHuong.Controllers
         public ActionResult CategoryAdd()
         {
             CategoryBL catelogy = new CategoryBL();
-            DataTable catelogydt;
+            List<CategoryDTO> catelogydt;
             catelogy.SearchList(out catelogydt);
-            ViewBag.CaterogyList = CommonMethod.DataTableToList<CategoryDTO>(catelogydt);
+            ViewBag.CaterogyList = catelogydt;
             return View();
         }
 
         [HttpPost]
         public ActionResult CategoryAdd(CategoryDTO category)
         {
+            CategoryBL catelogy = new CategoryBL();
+            List<CategoryDTO> catelogydt;
+            catelogy.SearchList(out catelogydt);
+            ViewBag.CaterogyList = catelogydt;
             if (ModelState.IsValid)
             {
                 CategoryBL bl = new CategoryBL();
-                category.created_by = 0;
-                category.updated_by = 0;
-                bl.InsertData(category);
-                return RedirectToAction("CategoryAdd");
+                int code = bl.CheckCode(category);
+                if (code > 0)
+                {
+                    TempData["Error"] = "Code already exists";
+                }
+                else
+                {
+                    TempData["Error"] = "";
+                    category.created_by = 0;
+                    category.updated_by = 0;
+                    int result = bl.InsertData(category);
+                    if (result == 1)
+                    {
+                        TempData["Error"] = "Insert badly";
+                        TempData["Success"] = "";
+                        return View(category);
+                    }
+                    else
+                    {
+                        TempData["Error"] = "";
+                        TempData["Success"] = "Insert successfully";
+                        return RedirectToAction("CategoryAdd");
+                    }
+                        
+                }
+               
             }
             return View(category);
         }
 
+        //Delete category
         [HttpGet]
         public ActionResult CategoryDelete(int id)
         {
@@ -77,16 +103,26 @@ namespace IVS_QuocHuong.Controllers
             CategoryDTO categoryDTO = new CategoryDTO();
             List<CategoryDTO> dtos = new List<CategoryDTO>();
             categoryDTO.id = id;
-            int equal = bl.SearchData(categoryDTO, out dtos);
-
-            if (equal == 1)
+            bl.SearchData(categoryDTO, out dtos);
+            if (dtos.Count<=0)
             {
                 Response.StatusCode = 404;
                 return null;
             }
             else
             {
-                bl.DeleteData(id);
+                int result=bl.DeleteData(id);
+                if (result == 1)
+                {
+                    TempData["Error"] = "Delete badly";
+                    TempData["Success"] = "";
+                    
+                }
+                else
+                {
+                    TempData["Error"] = "";
+                    TempData["Success"] = "Delete successfully";
+                }
             }
 
             return RedirectToAction("CategorySearch");
@@ -95,35 +131,53 @@ namespace IVS_QuocHuong.Controllers
         [HttpGet]
         public ActionResult CategoryUpdate(int id)
         {
+            ModelState.Clear();
             CategoryBL bl = new CategoryBL();
-            CategoryDTO category = new CategoryDTO();
-            CategoryBL catelogy = new CategoryBL();
-            DataTable catelogydt;
-            catelogy.SearchList(out catelogydt);
-            ViewBag.CaterogyList = CommonMethod.DataTableToList<CategoryDTO>(catelogydt);
+            CategoryDTO category = new CategoryDTO();   
+            List<CategoryDTO> viewbag; 
             category.id = id;
             List<CategoryDTO> dtos = new List<CategoryDTO>();
             bl.SearchData(category, out dtos);
             CategoryDTO model=new CategoryDTO();
             model= dtos[0];
+            bl.SearchListUp(model,out viewbag);
+            ViewBag.CaterogyList = viewbag;
             return View(model);
         }
         [HttpPost]
         public ActionResult CategoryUpdate(CategoryDTO category)
         {
             CategoryBL bl = new CategoryBL();
-            category.updated_by = 0;
-            bl.UpdateData(category);
-            return RedirectToAction("CategorySearch");
+            List<CategoryDTO> list = new List<CategoryDTO>();
+            bl.SearchListUp(category, out list);
+            ViewBag.CaterogyList = list;
+            if (ModelState.IsValid)
+            {    
+                category.updated_by = 0;
+                int result=bl.UpdateData(category);
+                if (result == 1)
+                {
+                    TempData["Error"] = "Update badly";
+                    TempData["Success"] = "";
+                    return View(category);
+                }
+                else
+                {
+                    TempData["Error"] = "";
+                    TempData["Success"] = "Update successfully";
+                    return RedirectToAction("CategorySearch");
+                }
+            }
+            else return View(category);
+
         }
 
+        //Delete multi category when checked
         [HttpPost]
         public ActionResult CategoryDeleteMulti(FormCollection frm)
         {
             string[] ids = frm["CategoryID"].Split(new char[] { ',' });
             CategoryBL bl = new CategoryBL();
-
-
             foreach (string item in ids)
             {
                 CategoryDTO categoryDTO = new CategoryDTO();
@@ -138,7 +192,17 @@ namespace IVS_QuocHuong.Controllers
                 }
                 else
                 {
-                    bl.DeleteData(id);
+                    int result = bl.DeleteData(id);
+                    if (result == 1)
+                    {
+                        TempData["Error"] = "Delete badly";
+                        TempData["Success"] = "";
+                    }
+                    else
+                    {
+                        TempData["Error"] = "";
+                        TempData["Success"] = "Insert successfully";
+                    }
                 }
             }
             return RedirectToAction("CategorySearch");

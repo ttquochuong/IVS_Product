@@ -73,9 +73,10 @@ namespace DAL.Product
             return returnCode;
         }
 
-        public static int SearchList(out DataTable dt)
+        public static int SearchList(out List<MeasureDTO> dt)
         {
-            dt = new DataTable();
+            dt = new List<MeasureDTO>();
+            DataTable tb = new DataTable();
             int returnCode = 0;
             string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             using (MySqlConnection con = new MySqlConnection(constr))
@@ -85,10 +86,21 @@ namespace DAL.Product
                     using (MySqlDataAdapter sda = new MySqlDataAdapter())
                     {
                         sda.SelectCommand = cmd;
-                        sda.Fill(dt);
-                        if (dt.Rows.Count == 0)
+                        sda.Fill(tb);
+                        if (tb.Rows.Count == 0)
                         {
                             returnCode = 1;
+                        }
+                        else
+                        {
+                            foreach (DataRow item in tb.Rows)
+                            {
+                                MeasureDTO dto = new MeasureDTO();
+                                dto.id = int.Parse(item["id"].ToString());
+                                dto.code = item["code"].ToString();
+                                dto.name = item["name"].ToString();
+                                dt.Add(dto);
+                            }
                         }
                     }
                 }

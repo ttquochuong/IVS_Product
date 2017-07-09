@@ -63,36 +63,56 @@
                         @TempData["Success"]
                     </div>
                 }
+                @Html.AntiForgeryToken()
                 @using (Html.BeginForm("CategoryUpdate", "Category", FormMethod.Post))
                 {
                     @Html.ValidationSummary(true)
                     <div class="form-group row">
-                        @Html.LabelFor(model => model.parent_id, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
-                            @Html.DropDownListFor(model => model.parent_id, new SelectList(ViewBag.CaterogyList, "id", "name"), new { @class = "chosen-select form-control", @id = "form-field-select-3" })
-
-                            @Html.ValidationMessageFor(model => model.parent_id)
-                        </div>
-                        @Html.LabelFor(model => model.code, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
-                            @Html.TextBoxFor(model => model.code, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.code)
-                        </div>
+                     <div class="col-sm-2">
+                        @Html.LabelFor(model => model.code, new { @class = "control-lable col-sm-4" })
+                        <p style="color:red">(*)</p>
+                     </div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.code, new { @class = "form-control col-sm-2", @type = "text", @id = "form - field - 1 ", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-sm-2">  </div>
+                         @Html.LabelFor(model => model.parent_id, new { @class = "control-lable col-sm-2" })
+                    <div class="col-sm-3">
+                         @Html.DropDownListFor(model => model.parent_id, new SelectList(ViewBag.CaterogyList, "id", "name"), new { @class = "chosen-select form-control", @id = "form-field-select-3" })
+                         @Html.ValidationMessageFor(model => model.parent_id, "", new { @class = "text-danger" })
+                     </div>
+                        
                     </div>
 
-                    <div class="form-group row">
-                        @Html.LabelFor(model => model.name, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
+                    <div class="form-group row"> 
+                        <div class="col-sm-2">
+                            @Html.LabelFor(model => model.name, new { @class = "control-lable col-sm-4" })
+                            <p style="color:red"> (*)</p>
+                        </div>
+       
+                        <div class="col-sm-3">
                             @Html.TextBoxFor(model => model.name, new { @class = "form-control col-sm-2 ", @type = "text", @id = "form - field - 1 " })
-                            @Html.ValidationMessageFor(model => model.name)
+                            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
                         </div>
-                        @Html.LabelFor(model => model.description, new { @class = "control-lable col-sm-2" })
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">  </div>
+                            @Html.LabelFor(model => model.description, new { @class = "control-lable col-sm-2" })
+                        <div class="col-sm-3">
                             @Html.TextAreaFor(model => model.description, new { @class = "form-control col-sm-4", @rows = "2", @cols = "30" })
+                         </div>
                         </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-sm-5">
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="submit" name="AddButton" class="btn btn-primary"><i class="ace-icon fa fa-floppy-o bigger-160"></i>Update</button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="reset" class="btn btn-primary "><i class="ace-icon fa fa-refresh bigger-160"></i>Reset</button>
+                            </div>
+
+                        </div>
                 }
             </div>
         </div>
