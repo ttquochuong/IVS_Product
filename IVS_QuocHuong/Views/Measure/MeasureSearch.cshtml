@@ -121,7 +121,7 @@
                                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                                             </a>
 
-                                            <a class="red" href="@Url.Action("MeasureDelete", "Measure", new { @id = @measure.id })">
+                                            <a class="red" href="@Url.Action("MeasureDelete", "Measure", new { @id = @measure.id })" onclick="return ConfirmDelete()">
                                                 <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                             </a>
                                         </div>

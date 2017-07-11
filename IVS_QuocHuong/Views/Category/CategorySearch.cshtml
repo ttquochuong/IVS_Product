@@ -135,7 +135,7 @@
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>
 
-                                        <a class="red"  href="@Url.Action("CategoryDelete", "Category", new { @id = @item.id })">
+                                        <a class="red"  href="@Url.Action("CategoryDelete", "Category", new { @id = @item.id })" onclick="return ConfirmDelete()" >
                                             <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                         </a>
                                     </div>
